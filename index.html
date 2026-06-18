@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#070b16">
+    <meta name="description" content="폭처조 교류회 Coming Soon">
+    <title>폭처조 교류회</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="./assets/favicon-64.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon-180.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <div class="scene" aria-hidden="true">
+      <div class="beacon beacon-red"></div>
+      <div class="beacon beacon-blue"></div>
+      <div class="stars"></div>
+      <div class="city city-back"></div>
+      <div class="city city-front"></div>
+      <div class="scanlines"></div>
+      <div class="noise"></div>
+    </div>
+
+    <main class="mission-screen">
+      <section class="mission-panel" aria-labelledby="mission-title">
+        <div class="panel-corners" aria-hidden="true"></div>
+        <p class="classified">SPECIAL MISSION CHANNEL</p>
+        <h1 id="mission-title">MISSION LOCKED</h1>
+        <p class="subtitle">COMING SOON<span class="cursor" aria-hidden="true"></span></p>
+        <p class="description">폭탄 해체를 위한 진입중입니다.</p>
+
+        <div class="status-grid" aria-label="Mission status">
+          <div class="status-row">
+            <span>STATUS</span>
+            <strong data-terminal="PREPARING">PREPARING</strong>
+          </div>
+          <div class="status-row">
+            <span>ACCESS</span>
+            <strong data-terminal="LOCKED">LOCKED</strong>
+          </div>
+          <div class="status-row">
+            <span>NEXT BRIEFING</span>
+            <strong data-terminal="SOON">SOON</strong>
+          </div>
+        </div>
+
+        <button class="standby-button" type="button" aria-label="Standby">
+          <span>STANDBY</span>
+        </button>
+      </section>
+    </main>
+
+    <footer class="footer">
+      Fan-made event website. Not affiliated with the official copyright holders.
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
