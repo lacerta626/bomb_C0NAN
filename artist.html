@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="HM ARCHIVE 참가자 작품 기록">
+  <title>참가자 작품 — HM ARCHIVE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="pages.css">
+  <link rel="stylesheet" href="artist.css">
+  <style>.artist-social[hidden]{display:none}</style>
+</head>
+<body class="artist-page">
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">HM</span><span class="brand-copy"><b>ARCHIVE</b><small>SPECIAL MISSION</small></span></a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="main-menu">MENU</button>
+    <nav class="main-menu" id="main-menu">
+      <a href="index.html">홈</a><a class="active" href="participants.html">참가자</a><a href="event.html">행사 안내</a><a href="archive.html">기록 보관소</a><a href="notice.html">공지사항</a>
+    </nav>
+    <a class="header-cta" href="event.html">MISSION INFO ↗</a>
+  </header>
+
+  <main class="artist-archive">
+    <img class="artist-archive__circuit" src="assets/main-circuit.png" alt="" aria-hidden="true">
+    <a class="artist-back" href="index.html">← BACK TO ARCHIVE</a>
+    <section class="artist-profile-head" aria-labelledby="artist-title">
+      <div class="artist-profile-visual" id="artist-profile-visual"></div>
+      <div class="artist-profile-copy">
+        <p class="artist-kicker" id="artist-kicker">01 / PARTICIPANT</p>
+        <h1 id="artist-title">참가자 이름</h1>
+        <p class="artist-bio" id="artist-bio">등록된 참가자 소개가 없습니다.</p>
+        <a class="artist-social" id="artist-social" href="#" hidden>SNS / LINK ↗</a>
+      </div>
+    </section>
+
+    <section class="work-archive" aria-labelledby="work-title">
+      <header><div><p>HM ARCHIVE / ARTIST WORKS</p><h2 id="work-title">WORK ARCHIVE</h2></div><span id="work-count">00</span></header>
+      <div class="work-grid" id="work-grid"></div>
+      <p class="work-empty" id="work-empty">작품 이미지 등록 전입니다.</p>
+    </section>
+  </main>
+
+  <div class="work-lightbox" id="work-lightbox" role="dialog" aria-modal="true" aria-label="작품 크게 보기" hidden>
+    <button class="lightbox-close" type="button" aria-label="닫기">×</button>
+    <button class="lightbox-prev" type="button" aria-label="이전 작품">‹</button>
+    <figure><img src="" alt=""><figcaption></figcaption></figure>
+    <button class="lightbox-next" type="button" aria-label="다음 작품">›</button>
+  </div>
+  <script src="artists-data.js"></script>
+  <script src="script.js"></script>
+  <script src="artist-detail.js"></script>
+</body>
+</html>

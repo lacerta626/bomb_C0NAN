@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>폭발물 처리 신입 훈련: 픽셀 해체</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="game" class="game-shell">
+    <section class="playfield" aria-label="폭탄 해체 게임">
+      <header class="hud pixel-panel">
+        <div>
+          <span class="hud-label">모드</span>
+          <strong id="modeLabel">대기</strong>
+        </div>
+        <div>
+          <span class="hud-label">단계</span>
+          <strong id="stageLabel">-- / --</strong>
+        </div>
+        <div>
+          <span class="hud-label">난이도</span>
+          <strong id="difficultyLabel">--</strong>
+        </div>
+        <div class="timer-block">
+          <span class="hud-label">시간</span>
+          <strong id="timerLabel">00</strong>
+        </div>
+        <div>
+          <span class="hud-label">실수</span>
+          <strong id="strikeLabel">0 / 3</strong>
+        </div>
+      </header>
+
+      <section id="bomb" class="bomb pixel-panel" aria-label="상호작용 픽셀 폭탄">
+        <div class="bomb-top">
+          <div class="battery-pack">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="digital-timer" id="bombTimer">00</div>
+          <div class="status-led" id="statusLed"></div>
+        </div>
+        <div class="warning-strip">
+          <span id="warningLabel">훈련 장치</span>
+          <span id="serialLabel">일련번호: ---</span>
+          <span id="portLabel">포트: ---</span>
+        </div>
+        <div id="moduleGrid" class="module-grid"></div>
+        <div class="circuit-board">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <div id="effectLayer" class="effect-layer" aria-hidden="true"></div>
+      </section>
+
+      <footer class="mission-bar pixel-panel">
+        <div>
+          <span class="hud-label">임무 상태</span>
+          <strong id="statusText">모드를 선택해 신입 대원 훈련을 시작하세요.</strong>
+        </div>
+        <div class="control-row">
+          <button id="practiceBtn" class="pixel-button">연습 모드</button>
+          <button id="continueBtn" class="pixel-button">임무 계속</button>
+          <button id="newMissionBtn" class="pixel-button">새 임무</button>
+          <button id="nextStageBtn" class="pixel-button hidden">다음 단계</button>
+          <button id="restartBtn" class="pixel-button">다시 시작</button>
+          <button id="resetBtn" class="pixel-button danger">진행 초기화</button>
+          <button id="debugBtn" class="pixel-button">디버그</button>
+          <button id="muteBtn" class="pixel-button icon-button" aria-pressed="false" title="소리 끄기">♪</button>
+        </div>
+      </footer>
+    </section>
+
+    <aside class="manual pixel-panel" aria-label="해체 매뉴얼">
+      <header class="manual-header">
+        <div>
+          <p>경찰 사건 파일</p>
+          <h1>해체 매뉴얼</h1>
+        </div>
+        <div class="stamp">신입</div>
+      </header>
+      <div id="manualTabs" class="manual-tabs"></div>
+      <section class="manual-page">
+        <h2 id="manualTitle">현재 모듈</h2>
+        <div class="manual-section">
+          <h3>규칙</h3>
+          <ul id="manualRules"></ul>
+        </div>
+        <div class="manual-section">
+          <h3>폭탄 정보</h3>
+          <dl id="propertyList"></dl>
+        </div>
+        <div class="manual-section">
+          <h3>경고</h3>
+          <p id="manualWarning">실수하면 경고가 누적됩니다. 한도에 도달하면 장치가 폭발합니다.</p>
+        </div>
+        <div class="manual-section">
+          <h3>메모</h3>
+          <p id="manualNotes">폭탄의 모듈을 선택하면 해당 매뉴얼 페이지가 강조됩니다.</p>
+        </div>
+        <div id="debugPanel" class="manual-section debug-panel hidden">
+          <h3>개발자 디버그</h3>
+          <pre id="debugOutput"></pre>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

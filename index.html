@@ -1,63 +1,69 @@
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#070b16">
-    <meta name="description" content="폭처조 교류회 Coming Soon">
-    <title>폭처조 교류회</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png">
-    <link rel="icon" type="image/png" sizes="64x64" href="./assets/favicon-64.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon-180.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
-  </head>
-  <body>
-    <div class="scene" aria-hidden="true">
-      <div class="beacon beacon-red"></div>
-      <div class="beacon beacon-blue"></div>
-      <div class="stars"></div>
-      <div class="city city-back"></div>
-      <div class="city city-front"></div>
-      <div class="scanlines"></div>
-      <div class="noise"></div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="하기와라 켄지와 마츠다 진페이 비공식 팬 이벤트 HM ARCHIVE">
+  <title>HM ARCHIVE — Interactive Mission Lobby</title>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="pages.css">
+  <link rel="stylesheet" href="edge-focus.css">
+  <link rel="stylesheet" href="intro-transition.css">
+  <style>@media(max-width:680px){.lobby-stage__label{display:none}}</style>
+</head>
+<body class="lobby-home intro-active">
+  <div class="intro-shell" id="intro-shell" role="dialog" aria-modal="true" aria-label="사이트 인트로">
+    <iframe class="intro-frame" id="intro-frame" src="intro.html" title="HM ARCHIVE 인트로" scrolling="no"></iframe>
+  </div>
+  <div class="transition-glitch" id="transition-glitch" aria-hidden="true"></div>
+  <div class="transition-flash" aria-hidden="true"></div>
+  <main class="lobby-stage" id="main-content" tabindex="-1" aria-label="HM ARCHIVE 인터랙티브 메인 로비" aria-hidden="true" inert>
+    <img class="lobby-stage__circuit" src="assets/main-circuit.png" alt="" aria-hidden="true">
+    <svg class="lobby-circuit-signals" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <filter id="signal-glow-cyan" x="-40%" y="-80%" width="180%" height="260%"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="signal-glow-magenta" x="-40%" y="-80%" width="180%" height="260%"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <g class="circuit-signal circuit-signal--cyan" style="--flow-duration:6.7s;--flow-delay:-1.8s"><path class="signal-tail" pathLength="1000" d="M0 94H220l54 54h252l58 58h260"/><path class="signal-core" pathLength="1000" d="M0 94H220l54 54h252l58 58h260"/></g>
+      <g class="circuit-signal circuit-signal--cyan" style="--flow-duration:9.2s;--flow-delay:-5.1s"><path class="signal-tail" pathLength="1000" d="M1920 86h-228l-46 48h-236l-70 72h-194"/><path class="signal-core" pathLength="1000" d="M1920 86h-228l-46 48h-236l-70 72h-194"/></g>
+      <g class="circuit-signal circuit-signal--magenta" style="--flow-duration:10.8s;--flow-delay:-3.4s"><path class="signal-tail" pathLength="1000" d="M0 332h176l76 76h196l54 56h182"/><path class="signal-core" pathLength="1000" d="M0 332h176l76 76h196l54 56h182"/></g>
+      <g class="circuit-signal circuit-signal--cyan" style="--flow-duration:7.9s;--flow-delay:-6.2s"><path class="signal-tail" pathLength="1000" d="M1920 310h-166l-82 86h-180l-66 66h-154"/><path class="signal-core" pathLength="1000" d="M1920 310h-166l-82 86h-180l-66 66h-154"/></g>
+      <g class="circuit-signal circuit-signal--cyan" style="--flow-duration:11.4s;--flow-delay:-8.6s"><path class="signal-tail" pathLength="1000" d="M0 840h250l74-74h232l62-64h200"/><path class="signal-core" pathLength="1000" d="M0 840h250l74-74h232l62-64h200"/></g>
+      <g class="circuit-signal circuit-signal--magenta" style="--flow-duration:8.6s;--flow-delay:-2.7s"><path class="signal-tail" pathLength="1000" d="M1920 828h-214l-62-64h-186l-78-80h-164"/><path class="signal-core" pathLength="1000" d="M1920 828h-214l-62-64h-186l-78-80h-164"/></g>
+      <g class="circuit-signal circuit-signal--cyan" style="--flow-duration:12.1s;--flow-delay:-9.3s"><path class="signal-tail" pathLength="1000" d="M176 1080V952l70-70V640l78-78V342"/><path class="signal-core" pathLength="1000" d="M176 1080V952l70-70V640l78-78V342"/></g>
+      <g class="circuit-nodes">
+        <circle cx="274" cy="148" r="5" style="--node-delay:-1.1s"/><circle cx="1646" cy="134" r="5" style="--node-delay:-4.8s"/><circle cx="252" cy="408" r="4" style="--node-delay:-3.2s"/><circle cx="1672" cy="396" r="4" style="--node-delay:-6.5s"/><circle cx="324" cy="766" r="5" style="--node-delay:-7.3s"/><circle class="node-magenta" cx="1644" cy="764" r="4" style="--node-delay:-2.2s"/>
+      </g>
+    </svg>
+    <div class="lobby-stage__vignette" aria-hidden="true"></div>
+    <img class="lobby-title" src="assets/e1e0d16a914b7b0140040d0039981264.png" alt="AFTER 11:07" draggable="false">
+    <div class="lobby-stage__label" aria-hidden="true"><b>PARTICIPANT ARCHIVE</b><span>SPECIAL RECORD / 2026</span></div>
+    <div class="lobby-stage__index" aria-hidden="true">MISSION LOBBY <span>01</span></div>
+
+    <div class="artist-cylinder-scene" aria-label="참여 작가 프로필 갤러리">
+      <div class="artist-cylinder-parallax">
+        <div class="artist-cylinder" role="list">
+          <!-- 참가자 카드 15개는 script.js의 artists 데이터 배열에서 생성됩니다. -->
+        </div>
+      </div>
     </div>
 
-    <main class="mission-screen">
-      <section class="mission-panel" aria-labelledby="mission-title">
-        <div class="panel-corners" aria-hidden="true"></div>
-        <p class="classified">SPECIAL MISSION CHANNEL</p>
-        <h1 id="mission-title">MISSION LOCKED</h1>
-        <p class="subtitle">COMING SOON<span class="cursor" aria-hidden="true"></span></p>
-        <p class="description">폭탄 해체를 위한 진입중입니다.</p>
+    <figure class="lobby-character">
+      <img src="assets/20260808_test.png" alt="방패와 헬멧을 든 하기와라와 마츠다">
+      <figcaption>MAIN CHARACTER / BOMB DISPOSAL UNIT</figcaption>
+    </figure>
 
-        <div class="status-grid" aria-label="Mission status">
-          <div class="status-row">
-            <span>STATUS</span>
-            <strong data-terminal="PREPARING">PREPARING</strong>
-          </div>
-          <div class="status-row">
-            <span>ACCESS</span>
-            <strong data-terminal="LOCKED">LOCKED</strong>
-          </div>
-          <div class="status-row">
-            <span>NEXT BRIEFING</span>
-            <strong data-terminal="SOON">SOON</strong>
-          </div>
-        </div>
-
-        <button class="standby-button" type="button" aria-label="Standby">
-          <span>STANDBY</span>
-        </button>
-      </section>
-    </main>
-
-    <footer class="footer">
-      Fan-made event website. Not affiliated with the official copyright holders.
-    </footer>
-
-    <script src="./script.js"></script>
-  </body>
+    <nav class="lobby-menu" aria-label="게임 로비 메뉴">
+      <a class="lobby-menu__item lobby-menu__item--cyan" href="event.html"><img src="assets/home-menu-schedule.png" alt="일정"></a>
+      <a class="lobby-menu__item lobby-menu__item--cyan" href="notice.html"><img src="assets/home-menu-notice.png" alt="공지사항"></a>
+      <a class="lobby-menu__item lobby-menu__item--magenta" href="minigame/index.html"><img src="assets/home-menu-game.png" alt="미니게임"></a>
+      <a class="lobby-menu__item lobby-menu__item--magenta" href="archive.html"><img src="assets/home-menu-gallery.png" alt="갤러리"></a>
+    </nav>
+    <div class="lobby-stage__status" aria-hidden="true"><span></span> ARCHIVE SYSTEM ONLINE</div>
+  </main>
+  <script src="artists-data.js"></script>
+  <script src="script.js"></script>
+  <script src="intro-transition.js"></script>
+</body>
 </html>

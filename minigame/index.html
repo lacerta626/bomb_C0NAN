@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MINIGAME MODE SELECT — AFTER 11:07</title>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../pages.css">
+  <link rel="stylesheet" href="../cyber-theme.css">
+  <link rel="stylesheet" href="../editorial-refresh.css">
+  <link rel="stylesheet" href="minigame.css">
+</head>
+<body class="mode-select-page" data-site-root="../">
+  <main class="mode-shell">
+    <section class="mode-panel" aria-labelledby="mode-title">
+      <div class="mode-panel__tag"><b>03 / SIMULATION SYSTEM</b><span>MISSION ACCESS TERMINAL</span></div>
+      <div class="mode-heading">
+        <p>MINI GAME</p>
+        <h1 id="mode-title">SELECT MODE</h1>
+        <span>난이도를 선택하면 별도의 훈련 시스템이 실행됩니다.</span>
+      </div>
+      <div class="mode-grid">
+        <a class="mode-card mode-card--easy" href="easy/index.html">
+          <span class="mode-card__index">ACCESS LEVEL 01</span>
+          <div><small>STANDARD MISSION</small><strong><i>▶</i> EASY MODE</strong><p>기본 전선 해체 훈련 / 5 STAGES</p></div>
+          <b class="mode-card__enter">ENTER <span>↗</span></b>
+        </a>
+        <a class="mode-card mode-card--hard" href="hard/index.html">
+          <span class="mode-card__index">ACCESS LEVEL 02</span>
+          <div><small>CHALLENGE MISSION</small><strong><i>▶</i> HARD MODE</strong><p>복합 모듈 해체 훈련 / ADVANCED</p></div>
+          <b class="mode-card__enter">ENTER <span>↗</span></b>
+        </a>
+      </div>
+      <div class="mode-panel__status"><span>SYSTEM READY</span><span>SELECT ACCESS LEVEL</span><span>AFTER 11:07</span></div>
+    </section>
+  </main>
+  <div class="game-notice" data-game-notice hidden>
+    <div class="game-notice__backdrop" data-modal-close></div>
+    <section class="game-notice__dialog" role="dialog" aria-modal="true" aria-labelledby="game-notice-title" aria-describedby="game-notice-description" tabindex="-1">
+      <small>GAME NOTICE / ACCESS CONFIRMATION</small>
+      <h2 id="game-notice-title">게임 참여 안내</h2>
+      <div id="game-notice-description" class="game-notice__copy">
+        <p>게임 종료 후 <strong>반드시 결과를 기록</strong>해 주세요.</p>
+        <p><strong>참여 가능 횟수에는 제한</strong>이 있으니<br>플레이 전 꼭 확인해 주세요.</p>
+        <p>기록하지 않은 결과는<br>반영되지 않을 수 있습니다.</p>
+      </div>
+      <div class="game-notice__actions">
+        <button type="button" class="game-notice__cancel" data-modal-cancel>취소</button>
+        <button type="button" class="game-notice__confirm" data-modal-confirm>확인 후 게임 시작</button>
+      </div>
+    </section>
+  </div>
+  <footer class="site-footer"><div class="footer-brand">AFTER 11:07</div><p>SIMULATION SYSTEM / MODE SELECT</p></footer>
+  <script src="shared-header.js"></script><script src="minigame.js"></script>
+</body>
+</html>

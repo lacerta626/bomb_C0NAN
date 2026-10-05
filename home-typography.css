@@ -1,0 +1,40 @@
+.zzz-main .story-panel .panel-copy h1,
+.zzz-main .story-panel .panel-copy h2,
+.zzz-main .story-panel .final-copy h2 {
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+
+.zzz-main .story-panel .panel-copy h1 em,
+.zzz-main .story-panel .panel-copy h2 em,
+.zzz-main .story-panel .final-copy h2 em {
+  color: #f5f6fa;
+  font-style: normal;
+  font-weight: 900;
+  -webkit-text-stroke: 0 transparent;
+  text-stroke: 0 transparent;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.zzz-main .story-panel.light-panel .panel-copy h2 em {
+  color: #090a14;
+  -webkit-text-stroke: 0 transparent;
+  text-stroke: 0 transparent;
+  text-shadow: none;
+}
+
+.zzz-main .story-panel .panel-desc,
+.zzz-main .story-panel .final-copy p {
+  font-weight: 500;
+  line-height: 1.75;
+  text-shadow: none;
+}
+
+.zzz-main .story-panel .panel-actions a,
+.zzz-main .story-panel .more-link,
+.zzz-main .story-panel .back-top {
+  font-weight: 700;
+  -webkit-text-stroke: 0 transparent;
+  text-stroke: 0 transparent;
+  text-shadow: none;
+}

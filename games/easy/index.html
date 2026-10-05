@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="특수 미션: 플레이 가능한 픽셀아트 폭탄 해체 훈련 프로그램."
+    />
+    <title>특수 미션 | 폭탄 해체 훈련 프로그램</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="game-shell" data-outcome="ready">
+      <section class="opening-screen" data-opening>
+        <div class="opening-panel">
+          <p class="eyebrow">특수 미션</p>
+          <h1>신입 대원 감지</h1>
+          <p>수상한 폭발물이 발견되었습니다.</p>
+          <p>미션 로그의 순서를 정확히 따라 전선을 절단하세요.</p>
+          <p>90초 안에 1단계부터 5단계까지 연속으로 해체하세요.</p>
+          <button class="pixel-button start-button" type="button" data-start>
+            훈련 시작
+          </button>
+        </div>
+      </section>
+
+      <header class="mission-header">
+        <div>
+          <p class="eyebrow">특수 미션</p>
+          <h2>폭탄 해체 훈련 프로그램</h2>
+          <div class="stage-meta" aria-label="현재 훈련 단계">
+            <span data-level-label>1단계</span>
+            <span data-speed-label>총 90초</span>
+            <span data-count-label>절단 4개</span>
+          </div>
+        </div>
+        <div class="timer-card" aria-label="카운트다운 타이머">
+          <span class="timer-label">남은 시간</span>
+          <strong data-timer>90</strong>
+        </div>
+      </header>
+
+      <section class="mission-grid" aria-label="폭탄 해체 게임">
+        <aside class="mission-log" aria-label="미션 로그">
+          <div class="panel-title">
+            <span></span>
+            <h3>미션 로그</h3>
+          </div>
+          <ol data-sequence-list></ol>
+          <p class="objective" data-objective>훈련 시작을 누르면 절단 순서가 표시됩니다.</p>
+        </aside>
+
+        <section class="bomb-stage" aria-label="픽셀아트 폭탄">
+          <div class="stage-backdrop">
+            <canvas
+              id="bombCanvas"
+              width="320"
+              height="224"
+              aria-label="여덟 개의 전선이 연결된 픽셀아트 폭탄"
+            ></canvas>
+            <div class="wire-hotspots" data-wire-hotspots></div>
+            <canvas
+              id="fxCanvas"
+              width="320"
+              height="224"
+              aria-hidden="true"
+            ></canvas>
+          </div>
+        </section>
+
+        <aside class="status-panel" aria-label="미션 상태">
+          <div class="panel-title">
+            <span></span>
+            <h3>미션 상태</h3>
+          </div>
+          <p class="status-message" data-status>대원 대기 중</p>
+          <div class="progress-track" aria-label="진행도">
+            <span data-progress></span>
+          </div>
+          <div class="wire-list" data-wire-list></div>
+          <button class="pixel-button restart-button" type="button" data-restart>
+            재시작
+          </button>
+        </aside>
+      </section>
+
+      <section class="reward-screen" data-reward hidden>
+        <div class="reward-card">
+          <p class="eyebrow">사건 해결</p>
+          <h2>해체 기록</h2>
+          <div class="result-stats" data-record>
+            <strong>남은 시간 --초</strong>
+            <span>소요 시간 --초</span>
+          </div>
+          <canvas
+            id="rewardCanvas"
+            width="360"
+            height="220"
+            aria-label="기념 픽셀아트 보상 카드"
+          ></canvas>
+          <div class="reward-actions">
+            <a class="pixel-button" data-download download="special-mission-wallpaper.png">
+              다운로드
+            </a>
+            <button class="pixel-button" type="button" data-replay>다시 도전</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

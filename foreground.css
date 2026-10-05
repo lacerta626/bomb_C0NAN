@@ -1,0 +1,8 @@
+/* Keep the color panel in the right 30%, but let the character art cross its edge. */
+.hero-visual{background:transparent;clip-path:none;overflow:visible;isolation:isolate}
+.hero-visual::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(155deg,var(--violet),#a483f5 55%,#483979);clip-path:polygon(18% 0,100% 0,100% 100%,0 100%)}
+.hero-visual::after{z-index:1;clip-path:polygon(18% 0,100% 0,100% 100%,0 100%)}
+.hero-visual img{z-index:5;width:min(56vw,880px);transform:translateX(-28%);filter:drop-shadow(-28px 34px 38px rgba(12,8,32,.48))}
+.visual-label{z-index:6}.visual-number{z-index:2}
+@media(max-width:980px){.hero-visual::before,.hero-visual::after{clip-path:polygon(0 8%,100% 0,100% 100%,0 100%)}.hero-visual img{width:min(105vw,780px);transform:translateX(-4%)}}
+@media(max-width:600px){.hero-visual img{width:130vw;transform:translateX(-7%)}}

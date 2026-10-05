@@ -1,0 +1,20 @@
+.lobby-stage .artist-card{--neon:#00efff;--neon-rgb:0,239,255;filter:none;isolation:isolate;overflow:hidden;scale:1;transition:opacity .25s ease,scale .16s ease,box-shadow .16s ease}
+.lobby-stage .artist-card--magenta{--neon:#ff00d4;--neon-rgb:255,0,212}
+.lobby-stage .artist-card .artist-profile{filter:blur(var(--edge-blur)) brightness(var(--edge-brightness));transition:filter .16s ease;will-change:filter}
+.lobby-stage .artist-card::before,.lobby-stage .artist-card::after{content:"";position:absolute;z-index:3;inset:0;pointer-events:none;opacity:0;transition:opacity .12s ease}
+.lobby-stage .artist-card::before{background:linear-gradient(90deg,var(--neon) 0 18px,transparent 18px calc(100% - 18px),var(--neon) calc(100% - 18px)) top/100% 2px no-repeat,linear-gradient(90deg,var(--neon) 0 18px,transparent 18px calc(100% - 18px),var(--neon) calc(100% - 18px)) bottom/100% 2px no-repeat,linear-gradient(180deg,var(--neon) 0 18px,transparent 18px calc(100% - 18px),var(--neon) calc(100% - 18px)) left/2px 100% no-repeat,linear-gradient(180deg,var(--neon) 0 18px,transparent 18px calc(100% - 18px),var(--neon) calc(100% - 18px)) right/2px 100% no-repeat;filter:drop-shadow(0 0 5px var(--neon))}
+.lobby-stage .artist-card::after{z-index:1;background:linear-gradient(135deg,rgba(var(--neon-rgb),.13),transparent 38%,rgba(var(--neon-rgb),.055));mix-blend-mode:screen}
+.lobby-stage .artist-card:is(:hover,:focus-visible,.is-position-hovered){z-index:4;scale:1.01;outline:none;box-shadow:0 0 4px rgba(var(--neon-rgb),1),0 0 10px rgba(var(--neon-rgb),.9),0 0 22px rgba(var(--neon-rgb),.65),0 0 38px rgba(var(--neon-rgb),.3),inset 0 0 8px rgba(var(--neon-rgb),.5),inset 0 0 0 2px var(--neon);animation:artist-neon-on .2s ease-out both}
+.lobby-stage .artist-card:is(:hover,:focus-visible,.is-position-hovered)::before,.lobby-stage .artist-card:is(:hover,:focus-visible,.is-position-hovered)::after{opacity:1}
+.lobby-stage .artist-card:is(:hover,:focus-visible,.is-position-hovered) .artist-profile{filter:blur(var(--edge-blur)) brightness(calc(var(--edge-brightness) + .11)) contrast(1.04)}
+.lobby-stage .artist-card:is(:hover,:focus-visible,.is-position-hovered) .artist-number{color:var(--neon);box-shadow:0 0 0 1px rgba(var(--neon-rgb),.75),0 0 10px rgba(var(--neon-rgb),.48);text-shadow:0 0 5px var(--neon),0 0 12px rgba(var(--neon-rgb),.8)}
+.lobby-stage .artist-card:is(:hover,:focus-visible,.is-position-hovered) .artist-name,.lobby-stage .artist-card:is(:hover,:focus-visible,.is-position-hovered) .artist-view{color:var(--neon);text-shadow:0 0 7px rgba(var(--neon-rgb),.9)}
+.lobby-stage .artist-card:is(:hover,:focus-visible,.is-position-hovered) .artist-view{opacity:1}
+.lobby-stage .artist-cylinder-scene.is-dragging .artist-card{scale:1;animation:none;cursor:grabbing;box-shadow:0 12px 24px rgba(0,0,20,.28),inset 0 0 0 1px rgba(0,230,255,.12)}
+.lobby-stage .artist-cylinder-scene.is-dragging .artist-card::before,.lobby-stage .artist-cylinder-scene.is-dragging .artist-card::after{opacity:0}
+.lobby-stage .artist-cylinder-scene.is-dragging .artist-card .artist-profile{filter:blur(var(--edge-blur)) brightness(var(--edge-brightness))}
+.lobby-stage .artist-cylinder-scene.is-dragging .artist-card .artist-number{color:#f5f7fa;text-shadow:none;box-shadow:0 0 0 1px rgba(0,231,240,.18)}
+.lobby-stage .artist-cylinder-scene.is-dragging .artist-card .artist-name{color:#00e7f0;text-shadow:none}
+.lobby-stage .artist-cylinder-scene.is-dragging .artist-card .artist-view{opacity:0}
+@keyframes artist-neon-on{0%{filter:brightness(.72)}28%{filter:brightness(1.28)}52%{filter:brightness(.88)}76%,100%{filter:brightness(1)}}
+@media(prefers-reduced-motion:reduce){.lobby-stage .artist-card:is(:hover,:focus-visible,.is-position-hovered){animation:none}}
