@@ -688,3 +688,47 @@ input {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* Easy-mode pixel artwork shared by the hard-mode bomb and wires. */
+.bomb {
+  border: 10px solid #0a182d;
+  border-image: url("assets/bomb/bomb-frame.png") 12 fill / 10px / 0 stretch;
+  background: #102039;
+  box-shadow: inset 0 0 0 3px #008ce0, 0 12px 0 #030914;
+}
+.bomb::before, .bomb::after { display: none; }
+.bomb-top, .warning-strip, .module-grid, .circuit-board { position: relative; z-index: 1; }
+.bomb-indicator { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.indicator-title { color: #f7f3d7; font-size: 13px; line-height: 1; letter-spacing: .05em; text-shadow: 1px 2px #030914; }
+.wires { gap: 9px; }
+.wire.image-wire {
+  display: block;
+  width: 100%;
+  height: clamp(12px, 1.8vw, 19px);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent var(--wire-default) center / 100% 100% no-repeat;
+  image-rendering: pixelated;
+  cursor: pointer;
+  transition: none;
+}
+.wire.image-wire:not(.cut):hover,
+.wire.image-wire:not(.cut):focus-visible {
+  background-image: var(--wire-hover);
+  outline: 1px dashed #54d7ff;
+  outline-offset: 2px;
+}
+.wire.image-wire.cut,
+.wire.image-wire.cut:hover {
+  background-image: var(--wire-cut);
+  opacity: 1;
+  cursor: default;
+}
+.wire.image-wire.cut::after { content: none; }
+.keypad-hint { margin: 8px 0 0; font-size: 12px; line-height: 1.5; color: #f7f3d7; }
+@media (max-width: 600px) {
+  .bomb { border-width: 7px; border-image-width: 7px; }
+  .indicator-title { font-size: 11px; }
+  .wire.image-wire { height: 15px; }
+}

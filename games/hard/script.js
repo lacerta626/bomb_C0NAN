@@ -50,11 +50,7 @@ const SYMBOL_NAMES = {
 };
 
 const STAGES = [
-  { id: 1, difficulty: "LOW", time: 60, timeJitter: 0, strikes: [3], moduleMode: "fixed", moduleCount: 1, pool: ["wires"] },
-  { id: 2, difficulty: "LOW", time: 75, timeJitter: 5, strikes: [3], moduleMode: "fixed", moduleCount: 2, pool: ["wires", "button"] },
-  { id: 3, difficulty: "MEDIUM", time: 90, timeJitter: 8, strikes: [2, 3], moduleMode: "choose", moduleCount: 3, pool: ["wires", "button", "keypad", "symbols"] },
-  { id: 4, difficulty: "MEDIUM", time: 100, timeJitter: 10, strikes: [2, 3], moduleMode: "choose", moduleCount: 4, pool: ["wires", "button", "keypad", "symbols", "signal"] },
-  { id: 5, difficulty: "HIGH", time: 120, timeJitter: 12, strikes: [1, 2], moduleMode: "fixed", moduleCount: 5, pool: ["wires", "button", "keypad", "symbols", "signal"] }
+  { id: 1, difficulty: "HIGH", time: 120, timeJitter: 0, strikes: [2], moduleMode: "fixed", moduleCount: 5, pool: ["wires", "button", "keypad", "symbols", "signal"] }
 ];
 
 const PRACTICE_STAGE = { id: 0, difficulty: "PRACTICE", time: 90, timeJitter: 0, strikes: [3], moduleMode: "fixed", moduleCount: 1, pool: ["wires"] };
@@ -626,7 +622,7 @@ class ManualManager {
     const notes = {
       wires: "전선은 한 번에 하나씩 자르세요. 해결된 모듈은 초록 불로 잠깁니다.",
       button: "마우스, 터치, 놓는 타이밍이 모두 판정됩니다.",
-      keypad: "C는 입력한 코드만 지웁니다.",
+      keypad: "C는 입력한 코드만 지웁니다. E는 정답을 입력하는 버튼입니다.",
       symbols: "누른 기호는 순서 판정에서 처리됩니다.",
       signal: "신호계는 정확히 멈출 때까지 계속 움직입니다."
     };
@@ -664,6 +660,7 @@ class ModuleManager {
     this.app.ui.spark();
     this.app.audio.clear();
     this.app.ui.setStatus(`${MODULE_NAMES[type]} 모듈 확보 완료.`);
+    this.app.ui.renderHud();
     if (state.solved.size === state.stage.modules.length) this.app.clearStage();
   }
 }
@@ -711,9 +708,15 @@ class WireModule extends BaseModule {
     this.progress = 0;
     const holder = document.createElement("div");
     holder.className = "wires";
+    const wireImageIds = { red: 1, blue: 2, yellow: 3, green: 4, purple: 5, white: 6 };
     this.colors.forEach((color) => {
       const wire = document.createElement("button");
-      wire.className = `wire ${color}`;
+      wire.className = `wire image-wire ${color}`;
+      const imageId = wireImageIds[color];
+      wire.style.setProperty("--wire-default", `url("assets/bomb/wire-${imageId}-default.png")`);
+      wire.style.setProperty("--wire-hover", `url("assets/bomb/wire-${imageId}-hover.png")`);
+      wire.style.setProperty("--wire-cut", `url("assets/bomb/wire-${imageId}-cut.png")`);
+      wire.setAttribute("aria-label", `${COLOR_NAMES[color] || color} 전선 절단`);
       wire.title = COLOR_NAMES[color] || color.toUpperCase();
       wire.addEventListener("click", (event) => {
         event.stopPropagation();
@@ -829,7 +832,10 @@ class KeypadModule extends BaseModule {
       });
       pad.append(button);
     });
-    el.append(display, pad);
+    const keypadHint = document.createElement("p");
+    keypadHint.className = "keypad-hint";
+    keypadHint.textContent = "C는 입력한 코드를 지웁니다. E는 정답을 입력하는 버튼입니다.";
+    el.append(display, pad, keypadHint);
     root.append(el);
   }
 
@@ -951,22 +957,8 @@ class UIManager {
   }
 
   bind() {
-    $("#practiceBtn").addEventListener("click", () => this.app.startPractice());
-    $("#continueBtn").addEventListener("click", () => this.app.startMission(this.app.save.data.unlockedStage));
     $("#newMissionBtn").addEventListener("click", () => this.app.startMission(1, true));
     $("#restartBtn").addEventListener("click", () => this.app.restart());
-    $("#nextStageBtn").addEventListener("click", () => this.app.nextStage());
-    $("#resetBtn").addEventListener("click", () => {
-      this.app.save.reset();
-      this.app.boot();
-    });
-    $("#debugBtn").addEventListener("click", () => {
-      const enabled = !this.app.state.debug.enabled;
-      this.app.state.debug.enabled = enabled;
-      this.app.save.data.debugEnabled = enabled;
-      this.app.save.persist();
-      this.renderDebug();
-    });
     $("#muteBtn").addEventListener("click", () => {
       this.app.audio.muted = !this.app.audio.muted;
       $("#muteBtn").setAttribute("aria-pressed", String(this.app.audio.muted));
@@ -977,7 +969,7 @@ class UIManager {
   renderHud() {
     const state = this.app.state;
     $("#modeLabel").textContent = MODE_NAMES[state.mode] || state.mode;
-    $("#stageLabel").textContent = state.stage?.id ? `${String(state.stage.id).padStart(2, "0")} / 05 단계` : "-- / --";
+    $("#stageLabel").textContent = state.stage ? `${state.solved.size} / ${state.stage.modules.length}` : "0 / 5";
     $("#difficultyLabel").textContent = DIFFICULTY_NAMES[state.stage?.difficulty] || "--";
     $("#statusLed").style.background = colorValue(state.properties.led);
     $("#warningLabel").textContent = LABEL_NAMES[state.properties.label] || "훈련 장치";
@@ -985,8 +977,7 @@ class UIManager {
     $("#portLabel").textContent = `포트: ${state.properties.port || "---"}`;
     this.app.strikes.render();
     this.app.timer.render();
-    $("#nextStageBtn").classList.toggle("hidden", state.status !== "clear" || state.mode !== "MAIN");
-    this.renderDebug();
+
   }
 
   setStatus(text) {
@@ -1095,7 +1086,7 @@ class DefusalGame {
     $("#moduleGrid").innerHTML = "";
     this.ui.renderHud();
     this.manual.render();
-    this.ui.setStatus(`준비 완료. 해금된 임무 단계: ${this.save.data.unlockedStage}. 총 시도: ${this.save.data.totalAttempts}.`);
+    this.ui.setStatus("게임 시작을 누르면 5개 해체 모듈이 동시에 활성화됩니다.");
   }
 
   startPractice() {
@@ -1169,21 +1160,18 @@ class DefusalGame {
     if (this.state.mode === "PRACTICE") {
       this.save.recordPractice();
       this.ui.setStatus("임무 완료: 연습 장치를 안전하게 해체했습니다.");
-    } else if (this.state.stage.id >= 5) {
+    } else {
       const rank = this.rank();
       this.save.recordFinal(this.state.totalClearTime, rank);
       this.audio.final();
       this.ui.setStatus(`최종 임무 완료. ${rank} 랭크를 획득했습니다.`);
-    } else {
-      this.save.unlock(this.state.stage.id + 1);
-      this.ui.setStatus("임무 완료: 모듈 묶음을 확보했습니다. 다음 단계가 해금되었습니다.");
     }
     this.ui.renderHud();
   }
 
   nextStage() {
     if (this.state.mode !== "MAIN" || this.state.status !== "clear") return;
-    if (this.state.stage.id < 5) this.begin(this.stages.next(this.state.stage), "MAIN");
+    this.begin(this.stages.getStage(1), "MAIN");
   }
 
   fail(reason) {

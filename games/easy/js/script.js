@@ -43,6 +43,7 @@ const state = {
   ledFrame: 0,
   fx: [],
   transitionId: null,
+  hoveredWire: null,
 };
 
 const els = {};
@@ -178,9 +179,23 @@ const animationManager = {
 
 const bombRenderer = {
   ctx: null,
+  frame: null,
+  wireSprites: {},
   init() {
     this.ctx = els.bombCanvas.getContext("2d");
     this.ctx.imageSmoothingEnabled = false;
+    this.frame = new Image();
+    this.frame.src = "img/bomb/bomb-frame.png";
+    this.frame.addEventListener("load", () => this.draw());
+    WIRE_LAYOUT.forEach((wire, index) => {
+      this.wireSprites[wire.id] = {};
+      ["default", "hover", "cut"].forEach((variant) => {
+        const image = new Image();
+        image.src = `img/bomb/wire-${index + 1}-${variant}.png`;
+        image.addEventListener("load", () => this.draw());
+        this.wireSprites[wire.id][variant] = image;
+      });
+    });
   },
   rect(x, y, w, h, color) {
     this.ctx.fillStyle = color;
@@ -194,6 +209,13 @@ const bombRenderer = {
   drawWire(wire) {
     const cut = state.cutWires.has(wire.id);
     const color = COLORS[wire.id];
+    const variant = cut ? "cut" : state.hoveredWire === wire.id ? "hover" : "default";
+    const sprite = this.wireSprites[wire.id]?.[variant];
+    if (sprite?.complete && sprite.naturalWidth) {
+      const yOffset = 2;
+      this.ctx.drawImage(sprite, 51, wire.y - yOffset);
+      return;
+    }
     this.rect(52, wire.y, 82, 6, "#060a12");
     this.rect(186, wire.y, 84, 6, "#060a12");
     if (cut) {
@@ -212,32 +234,18 @@ const bombRenderer = {
     const ctx = this.ctx;
     const level = currentLevel();
     ctx.clearRect(0, 0, 320, 224);
-    this.rect(0, 0, 320, 224, "#0a1223");
-    for (let x = 0; x < 320; x += 16) this.rect(x, 198, 10, 3, "#1d2b42");
-    this.rect(36, 38, 248, 150, "#323b4d");
-    this.rect(44, 46, 232, 134, "#141d2d");
-    this.rect(36, 38, 248, 8, "#68758d");
-    this.rect(44, 180, 232, 8, "#050910");
-    [[44, 46], [260, 46], [44, 166], [260, 166]].forEach(([x, y]) => {
-      this.rect(x, y, 8, 8, "#9aa4b8");
-      this.rect(x + 2, y + 2, 4, 4, "#2b3446");
-    });
-    this.rect(72, 22, 90, 30, "#090d14");
-    this.rect(80, 30, 74, 15, "#1e0709");
-    this.text(String(state.timeLeft).padStart(2, "0"), 98, 43, 15, state.timeLeft < 11 ? "#e84b45" : "#ffd34f");
-    this.rect(172, 22, 60, 30, "#222c3d");
-    this.text(`L${level.level}`, 183, 42, 13, "#ffd34f");
-    this.rect(236, 28, 13, 13, state.ledFrame < 18 && state.active && !state.complete ? "#e84b45" : "#511718");
-    this.rect(240, 32, 4, 4, "#ffd6d2");
-    this.rect(190, 70, 62, 44, "#153426");
-    for (let x = 196; x < 248; x += 10) this.rect(x, 76, 3, 28, "#38d86f");
-    for (let y = 78; y < 108; y += 10) this.rect(196, y, 48, 3, "#38d86f");
-    this.rect(205, 85, 10, 8, "#111827");
-    this.rect(230, 94, 8, 8, "#111827");
+    if (this.frame?.complete && this.frame.naturalWidth) {
+      ctx.drawImage(this.frame, 0, 0, 320, 224);
+    } else {
+      this.rect(0, 0, 320, 224, "#102341");
+    }
+    this.rect(65, 29, 66, 16, "#102341");
+    this.text(String(state.timeLeft).padStart(2, "0"), 84, 42, 14, state.timeLeft < 11 ? "#ff5c62" : "#f7f3d7");
+    this.rect(178, 26, 50, 20, "#102341");
+    this.text(`L${level.level}`, 193, 41, 12, "#f7f3d7");
     WIRE_LAYOUT.forEach((wire) => this.drawWire(wire));
-    this.rect(62, 164, 74, 12, "#ffd34f");
-    this.text("위험", 88, 173, 8, "#07101f");
-    this.text("BDS-T05", 120, 175, 9, "#abb4c4");
+    const ledOn = state.ledFrame < 18 && state.active && !state.complete;
+    [38, 44, 50, 266, 272, 278].forEach((x) => this.rect(x, 199, 4, 9, ledOn ? "#f7f3d7" : "#00bdf3"));
   },
 };
 
@@ -283,6 +291,14 @@ const wireSystem = {
       button.style.width = "68%";
       button.style.height = "6%";
       button.addEventListener("click", () => this.cut(wire.id));
+      button.addEventListener("pointerenter", () => {
+        state.hoveredWire = wire.id;
+        bombRenderer.draw();
+      });
+      button.addEventListener("pointerleave", () => {
+        if (state.hoveredWire === wire.id) state.hoveredWire = null;
+        bombRenderer.draw();
+      });
       els.hotspots.append(button);
     });
   },

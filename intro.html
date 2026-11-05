@@ -92,6 +92,22 @@ footer { position: absolute; right: 18px; bottom: 12px; max-width: 46vw; color: 
 @keyframes blink { 0%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
 @media (max-aspect-ratio: 3 / 4) { .mission-console { width: calc(var(--image-width) * .325); height: calc(var(--image-height) * .385); } .status-grid { width: 90%; } footer { max-width: 70vw; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
+
+/* STANDBY → MAIN: short RGB glitch, no second loading screen */
+body.is-entering .control-room { animation: enter-glitch .62s steps(1,end) both; }
+body.is-entering::after { content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,235,255,.16) 0 2px,transparent 2px 8px);
+  animation: enter-flash .62s steps(1,end) both; }
+@keyframes enter-glitch {
+  0%,100%{filter:none;transform:none}
+  12%{filter:drop-shadow(8px 0 #f000ed) drop-shadow(-8px 0 #00b5ff);transform:translateX(-5px)}
+  24%{filter:contrast(2);transform:translateX(8px) skewX(-2deg)}
+  36%{filter:invert(1);transform:translateX(-3px)}
+  48%{filter:drop-shadow(-10px 0 #f000ed);transform:translateX(4px)}
+  65%{filter:none;transform:none}
+  80%{filter:contrast(2);transform:translateX(-2px)}
+}
+@keyframes enter-flash {0%,15%,40%,65%{opacity:0} 16%,22%,41%,47%,66%,95%{opacity:1} 100%{opacity:0}}
 </style>
 </head>
 <body>
@@ -130,18 +146,13 @@ footer { position: absolute; right: 18px; bottom: 12px; max-width: 46vw; color: 
       if (isTransitioning) return;
       isTransitioning = true;
       button.disabled = true;
-      button.setAttribute('aria-pressed', 'true');
       button.classList.add('is-armed');
-      button.querySelector('span').textContent = 'STANDING BY';
-      try {
-        if (window.parent !== window && typeof window.parent.hmArchiveEnter === 'function') {
-          window.parent.hmArchiveEnter();
-          return;
-        }
-      } catch (error) {
-        // file:// 환경처럼 iframe 직접 접근이 제한되면 postMessage로 전환한다.
-      }
-      window.parent.postMessage({ type: 'hm-archive:enter' }, '*');
+      button.setAttribute('aria-pressed', 'true');
+      button.querySelector('span').textContent = 'CONNECTING...';
+      document.body.classList.add('is-entering');
+      // The intro is the only entry gate. The main page has no second loader.
+      window.setTimeout(() => { window.location.href = 'index.html'; },
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 80 : 620);
     });
   </script>
 </body>

@@ -15,7 +15,7 @@
           <strong id="modeLabel">대기</strong>
         </div>
         <div>
-          <span class="hud-label">단계</span>
+          <span class="hud-label">해체 진행</span>
           <strong id="stageLabel">-- / --</strong>
         </div>
         <div>
@@ -34,11 +34,11 @@
 
       <section id="bomb" class="bomb pixel-panel" aria-label="상호작용 픽셀 폭탄">
         <div class="bomb-top">
-          <div class="battery-pack">
+          <div class="bomb-indicator"><span class="indicator-title">배터리</span><div class="battery-pack">
             <span></span><span></span><span></span>
-          </div>
+          </div></div>
           <div class="digital-timer" id="bombTimer">00</div>
-          <div class="status-led" id="statusLed"></div>
+          <div class="bomb-indicator"><span class="indicator-title">LED</span><div class="status-led" id="statusLed"></div></div>
         </div>
         <div class="warning-strip">
           <span id="warningLabel">훈련 장치</span>
@@ -58,13 +58,8 @@
           <strong id="statusText">모드를 선택해 신입 대원 훈련을 시작하세요.</strong>
         </div>
         <div class="control-row">
-          <button id="practiceBtn" class="pixel-button">연습 모드</button>
-          <button id="continueBtn" class="pixel-button">임무 계속</button>
-          <button id="newMissionBtn" class="pixel-button">새 임무</button>
-          <button id="nextStageBtn" class="pixel-button hidden">다음 단계</button>
+          <button id="newMissionBtn" class="pixel-button">게임 시작</button>
           <button id="restartBtn" class="pixel-button">다시 시작</button>
-          <button id="resetBtn" class="pixel-button danger">진행 초기화</button>
-          <button id="debugBtn" class="pixel-button">디버그</button>
           <button id="muteBtn" class="pixel-button icon-button" aria-pressed="false" title="소리 끄기">♪</button>
         </div>
       </footer>
@@ -96,10 +91,6 @@
         <div class="manual-section">
           <h3>메모</h3>
           <p id="manualNotes">폭탄의 모듈을 선택하면 해당 매뉴얼 페이지가 강조됩니다.</p>
-        </div>
-        <div id="debugPanel" class="manual-section debug-panel hidden">
-          <h3>개발자 디버그</h3>
-          <pre id="debugOutput"></pre>
         </div>
       </section>
     </aside>

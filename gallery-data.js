@@ -1,17 +1,83 @@
 window.AFTER_GALLERY = [
-  { id: '01', image: '', title: '', artist: '', aspectRatio: '3 / 4' },
-  { id: '02', image: '', title: '', artist: '', aspectRatio: '1 / 1' },
-  { id: '03', image: '', title: '', artist: '', aspectRatio: '4 / 5' },
-  { id: '04', image: '', title: '', artist: '', aspectRatio: '16 / 9' },
-  { id: '05', image: '', title: '', artist: '', aspectRatio: '2 / 3' },
-  { id: '06', image: '', title: '', artist: '', aspectRatio: '1 / 1' },
-  { id: '07', image: '', title: '', artist: '', aspectRatio: '3 / 2' },
-  { id: '08', image: '', title: '', artist: '', aspectRatio: '9 / 16' },
-  { id: '09', image: '', title: '', artist: '', aspectRatio: '4 / 5' },
-  { id: '10', image: '', title: '', artist: '', aspectRatio: '3 / 4' },
-  { id: '11', image: '', title: '', artist: '', aspectRatio: '1 / 1' },
-  { id: '12', image: '', title: '', artist: '', aspectRatio: '16 / 10' },
-  { id: '13', image: '', title: '', artist: '', aspectRatio: '2 / 3' },
-  { id: '14', image: '', title: '', artist: '', aspectRatio: '4 / 3' },
-  { id: '15', image: '', title: '', artist: '', aspectRatio: '3 / 4' }
+  {
+    "id": "02",
+    "artist": "대이님",
+    "category": "participant",
+    "image": "assets/gallery/대이님_1.png",
+    "works": [
+      {
+        "image": "assets/gallery/대이님_1.png",
+        "title": "출품 작품",
+        "aspectRatio": "1631 / 2048"
+      },
+      {
+        "image": "assets/gallery/대이님_0.png",
+        "title": "출품 작품",
+        "aspectRatio": "1738 / 2047"
+      }
+    ],
+    "aspectRatio": "1631 / 2048"
+  },
+  {
+    "id": "01",
+    "artist": "익명",
+    "category": "participant",
+    "image": "assets/gallery/달구님_1_anonymous.jpg",
+    "works": [
+      {
+        "image": "assets/gallery/달구님_1_anonymous.jpg",
+        "title": "출품 작품",
+        "aspectRatio": "2048 / 1955"
+      },
+      {
+        "image": "assets/gallery/달구님_2_anonymous.jpg",
+        "title": "출품 작품",
+        "aspectRatio": "1153 / 2048"
+      },
+      {
+        "image": "assets/gallery/달구님_3_anonymous.jpg",
+        "title": "출품 작품",
+        "aspectRatio": "2048 / 1153"
+      }
+    ],
+    "aspectRatio": "2048 / 1955"
+  },
+  {
+    "id": "04",
+    "artist": "익명",
+    "category": "participant",
+    "image": "assets/gallery/청님_1_anonymous.png",
+    "works": [
+      {
+        "image": "assets/gallery/청님_1_anonymous.png",
+        "title": "출품 작품",
+        "aspectRatio": "2048 / 2048"
+      },
+      {
+        "image": "assets/gallery/청님_2_anonymous.png",
+        "title": "출품 작품",
+        "aspectRatio": "2048 / 2048"
+      }
+    ],
+    "aspectRatio": "2048 / 2048"
+  },
+  {
+    "id": "03",
+    "artist": "텐시님",
+    "category": "participant",
+    "image": "assets/gallery/텐시님_1.jpg",
+    "works": [
+      {
+        "image": "assets/gallery/텐시님_1.jpg",
+        "title": "출품 작품",
+        "aspectRatio": "2048 / 1456"
+      },
+      {
+        "image": "assets/gallery/텐시님_2.jpg",
+        "title": "출품 작품",
+        "aspectRatio": "2048 / 1456"
+      }
+    ],
+    "aspectRatio": "2048 / 1456"
+  }
 ];

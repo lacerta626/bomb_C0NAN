@@ -181,16 +181,8 @@ canvas {
 .panel-title {
   display: flex;
   align-items: center;
-  gap: 9px;
   border-bottom: 3px solid #324056;
   padding-bottom: 12px;
-}
-
-.panel-title span {
-  width: 12px;
-  height: 12px;
-  background: var(--red);
-  box-shadow: 16px 0 var(--yellow), 32px 0 var(--green);
 }
 
 .panel-title h3 {
@@ -234,9 +226,9 @@ canvas {
   width: min(100%, 820px);
   aspect-ratio: 320 / 224;
   position: relative;
-  border: 4px solid #5c6880;
-  background: #0a1223;
-  box-shadow: 0 10px 0 var(--shadow), inset 0 0 0 4px #121c31;
+  border: 4px solid #00bdf3;
+  background: #102341;
+  box-shadow: 0 10px 0 var(--shadow), 0 0 0 4px #07172d, 0 0 28px rgba(0, 189, 243, 0.18);
 }
 
 #bombCanvas,
@@ -257,14 +249,14 @@ canvas {
   position: absolute;
   border: 0;
   background: transparent;
-  cursor: crosshair;
+  cursor: url("../img/bomb/cursor-hover.png") 8 8, crosshair;
   pointer-events: auto;
 }
 
 .wire-hotspots button:hover,
 .wire-hotspots button:focus-visible {
-  outline: 4px solid rgba(255, 255, 255, 0.65);
-  outline-offset: -4px;
+  outline: 2px dashed rgba(0, 189, 243, 0.72);
+  outline-offset: -2px;
 }
 
 .wire-hotspots button.is-cut {
