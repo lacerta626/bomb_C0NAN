@@ -1,5 +1,7 @@
 "use strict";
 
+const SYMBOL_LOGIC = window.AFTER_SYMBOL_LOGIC;
+
 const MODULE_NAMES = {
   wires: "전선",
   button: "버튼",
@@ -422,18 +424,29 @@ class PuzzleFactory {
     let rules = [];
     if (variant === "A") {
       solution = shuffle(symbols);
-      rules = [`기호를 다음 순서대로 누르세요: ${solution.map(symbolKo).join(" -> ")}.`];
+      rules = [
+        "장치에 표시된 네 가지 기호를 확인하세요.",
+        `기호를 다음 순서대로 누르세요: ${solution.map(symbolKo).join(" → ")}.`,
+        "기호가 장치에 배치된 위치는 정답 순서와 관계없습니다."
+      ];
     } else if (variant === "B") {
       const priority = shuffle(["MOON", "CIRCLE", "STAR", "BOLT", "DIAMOND", "TRIANGLE"]);
-      solution = [...symbols].sort((a, b) => priority.indexOf(a) - priority.indexOf(b));
-      rules = [`등장한 기호만 다음 우선순서대로 누르세요: ${priority.map(symbolKo).join(" > ")}.`];
-    } else {
-      solution = [...symbols].sort((a, b) => symbolWeight(a, symbols) - symbolWeight(b, symbols));
+      solution = SYMBOL_LOGIC.orderByPriority(symbols, priority);
       rules = [
-        "달이 있으면 달을 가장 먼저 누르세요.",
-        "원이 있으면 별보다 먼저 누르세요.",
-        "번개와 별이 함께 있으면 별을 번개보다 먼저 누르세요.",
-        "마름모가 없으면 삼각형은 마지막입니다."
+        "장치에 표시된 네 가지 기호만 사용하고, 등장하지 않은 기호는 건너뛰세요.",
+        `전체 우선순위: ${priority.map(symbolKo).join(" > ")}.`,
+        "> 기호는 왼쪽 기호를 오른쪽 기호보다 먼저 누른다는 뜻입니다.",
+        "기호가 장치에 배치된 위치는 정답 순서와 관계없습니다."
+      ];
+    } else {
+      solution = SYMBOL_LOGIC.orderConditional(symbols);
+      rules = [
+        "장치에 표시된 네 가지 기호를 확인하세요.",
+        "기호의 기본 우선순위는 달 → 원 → 별 → 번개 → 삼각형 → 마름모입니다.",
+        "1. 장치에 없는 기호는 건너뜁니다.",
+        "2. 표시된 기호만 우선순위에 따라 누릅니다.",
+        "3. 마름모가 없다면 삼각형은 마지막에 누릅니다.",
+        "4. 기호가 장치에 배치된 위치는 정답 순서와 관계없습니다."
       ];
     }
     return { variant, symbols, solution, rules };
@@ -921,7 +934,7 @@ class SymbolModule extends BaseModule {
     if (!this.canEvaluate()) return;
     this.app.audio.click();
     if (symbol !== this.sequence[this.progress]) {
-      this.wrong(`기호 순서가 틀렸습니다. ${SYMBOL_NAMES[this.sequence[this.progress]]}을(를) 눌러야 합니다.`);
+      this.wrong(SYMBOL_LOGIC.WRONG_MESSAGE);
       return;
     }
     button.disabled = true;
@@ -1009,12 +1022,22 @@ class UIManager {
     $("#stageLabel").textContent = state.stage ? `${state.solved.size} / ${state.stage.modules.length}` : "0 / 5";
     $("#difficultyLabel").textContent = DIFFICULTY_NAMES[state.stage?.difficulty] || "--";
     $("#statusLed").style.background = colorValue(state.properties.led);
+    this.renderBatteryCount(state.properties.batteries);
     $("#warningLabel").textContent = LABEL_NAMES[state.properties.label] || "훈련 장치";
     $("#serialLabel").textContent = `일련번호: ${state.properties.serial || "---"}`;
     $("#portLabel").textContent = `포트: ${state.properties.port || "---"}`;
     this.app.strikes.render();
     this.app.timer.render();
 
+  }
+
+  renderBatteryCount(batteryCount) {
+    const batteryPack = $("#batteryPack");
+    const count = Math.max(0, Math.trunc(Number(batteryCount) || 0));
+    if (batteryPack.childElementCount !== count) {
+      batteryPack.replaceChildren(...Array.from({ length: count }, () => document.createElement("span")));
+    }
+    batteryPack.setAttribute("aria-label", `배터리 ${count}개`);
   }
 
   setStatus(text) {
@@ -1373,16 +1396,6 @@ function symbolGlyph(symbol) {
     CIRCLE: "●",
     DIAMOND: "◆"
   }[symbol];
-}
-
-function symbolWeight(symbol, symbols) {
-  if (symbol === "MOON") return 0;
-  if (symbol === "CIRCLE") return 1;
-  if (symbol === "STAR") return symbols.includes("BOLT") ? 2 : 3;
-  if (symbol === "BOLT") return 4;
-  if (symbol === "TRIANGLE") return symbols.includes("DIAMOND") ? 5 : 9;
-  if (symbol === "DIAMOND") return 8;
-  return 6;
 }
 
 const game = new DefusalGame();

@@ -34,9 +34,7 @@
 
       <section id="bomb" class="bomb pixel-panel" aria-label="상호작용 픽셀 폭탄">
         <div class="bomb-top">
-          <div class="bomb-indicator"><span class="indicator-title">배터리</span><div class="battery-pack">
-            <span></span><span></span><span></span>
-          </div></div>
+          <div class="bomb-indicator"><span class="indicator-title">배터리</span><div class="battery-pack" id="batteryPack" aria-label="배터리 0개"></div></div>
           <div class="digital-timer" id="bombTimer">00</div>
           <div class="bomb-indicator"><span class="indicator-title">LED</span><div class="status-led" id="statusLed"></div></div>
         </div>
@@ -96,7 +94,8 @@
     </aside>
   </main>
 
-  <script src="script.js?v=20261107-2"></script>
+  <script src="symbol-logic.js?v=20261107-1"></script>
+  <script src="script.js?v=20261107-3"></script>
 <script src="../../minigame/play-guard.js"></script>
 </body>
 </html>
