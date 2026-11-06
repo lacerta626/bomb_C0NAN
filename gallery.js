@@ -3,7 +3,10 @@
 
   window.AFTER_GALLERY_ENHANCED = true;
   const data = window.AFTER_GALLERY || [];
-  const collaborationFiles = Array.from({ length: 8 }, (_, index) => `assets/GOODS_${index + 1}.jpg`);
+  const collaborationFiles = [
+    ...Array.from({ length: 8 }, (_, index) => `assets/GOODS_${index + 1}.jpg`),
+    'assets/GOODS_9.png',
+  ];
   const mount = document.querySelector('.archive-cards');
   const guestbook = document.querySelector('#gallery-guestbook');
   const tabs = [...document.querySelectorAll('[data-gallery-filter]')];

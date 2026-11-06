@@ -19,7 +19,7 @@ const headerNavigation = [
   { label: '일정', href: 'event.html', page: 'event.html', hash: '' },
   { label: '공지사항', href: 'notice.html', page: 'notice.html' },
   { label: '미니게임', href: 'minigame/index.html', page: 'minigame/index.html' },
-  { label: '갤러리', href: 'archive.html', page: 'archive.html' }
+  { label: '갤러리', href: 'archive.html?v=20261106-4', page: 'archive.html' }
 ];
 
 const syncHeaderNavigation = () => {

@@ -7,7 +7,7 @@ const navigationLinks = Object.freeze({
   schedule: 'event.html',
   notice: 'notice.html',
   game: 'minigame/index.html',
-  gallery: 'archive.html',
+  gallery: 'archive.html?v=20261106-4',
 });
 
 document.querySelectorAll('[data-route]').forEach((link) => {

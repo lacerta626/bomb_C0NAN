@@ -4,7 +4,6 @@ window.AFTER_GALLERY = [
     thumbnail: 'assets/gallery/대이님_1.png', image: 'assets/gallery/대이님_1.png', aspectRatio: '1631 / 2048',
     works: [
       { type: 'image', title: '작품 1', file: 'assets/gallery/대이님_1.png', image: 'assets/gallery/대이님_1.png', aspectRatio: '1631 / 2048' },
-      { type: 'image', title: '작품 2', file: 'assets/gallery/대이님_0.png', image: 'assets/gallery/대이님_0.png', aspectRatio: '1738 / 2047' },
       { type: 'video', title: '영상 작품', file: 'assets/gallery/대이님_1.mp4', thumbnail: 'assets/gallery/대이님_1.png' },
     ],
   },

@@ -11,7 +11,7 @@ const gallery = context.window.AFTER_GALLERY;
 const works = gallery.flatMap((artist) => artist.works || []);
 
 assert(gallery.length === 8, `Expected 8 artist groups, received ${gallery.length}.`);
-assert(works.length === 14, `Expected 14 works, received ${works.length}.`);
+assert(works.length === 13, `Expected 13 works, received ${works.length}.`);
 assert(gallery.every((artist) => artist.category === 'participant'), 'All registered artist works must be in the participant category.');
 assert(new Set(gallery.map((artist) => artist.id)).size === gallery.length, 'Gallery IDs must be unique.');
 
@@ -49,6 +49,8 @@ assert(fs.existsSync(path.join(root, 'vendor/pdfjs/pdf.worker.min.mjs')), 'PDF.j
 for (let index = 1; index <= 8; index += 1) {
   assert(fs.existsSync(path.join(root, `assets/GOODS_${index}.jpg`)), `Missing collaboration image GOODS_${index}.jpg.`);
 }
+assert(fs.existsSync(path.join(root, 'assets/GOODS_9.png')), 'Missing collaboration image GOODS_9.png.');
+assert(!fs.existsSync(path.join(root, 'assets/gallery/대이님_0.png')), 'Removed Daeyi image must not remain in deployment assets.');
 const guestbookSql = fs.readFileSync(path.join(root, 'supabase-gallery-guestbook.sql'), 'utf8');
 assert(/enable row level security/i.test(guestbookSql), 'Gallery guestbook must enable RLS.');
 assert(/post_gallery_guestbook/.test(guestbookSql) && /30 seconds/.test(guestbookSql), 'Guestbook server rate limit is missing.');
@@ -65,4 +67,4 @@ const cleanupSql = fs.readFileSync(path.join(root, 'supabase-gallery-guestbook-c
 assert(/delete from public\.gallery_guestbook;/i.test(cleanupSql), 'Explicit guestbook cleanup is missing.');
 assert(!/(delete|truncate)\s+(from\s+)?public\.(game_|participant_|admin_)/i.test(cleanupSql), 'Guestbook cleanup must not touch game or admin data.');
 
-console.log('Gallery integration checks passed: 8 artist groups, 14 works, 111 PDF pages.');
+console.log('Gallery integration checks passed: 8 artist groups, 13 works, 111 PDF pages, 9 collaboration images.');

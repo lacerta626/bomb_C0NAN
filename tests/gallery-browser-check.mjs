@@ -76,7 +76,7 @@ try {
   await send('Log.enable');
   await send('Page.navigate', { url: 'http://127.0.0.1:4173/archive.html' });
   await until('document.readyState', 'complete');
-  await until("document.querySelectorAll('.gallery-collaboration-item').length", 8);
+  await until("document.querySelectorAll('.gallery-collaboration-item').length", 9);
   const guestbookControls = await evaluate(`(() => ({
     createPassword: Boolean(document.querySelector('#gallery-guestbook-form input[name="password"][type="password"]')),
     editorPassword: Boolean(document.querySelector('.gallery-guestbook-editor input[name="password"][type="password"]')),
@@ -99,7 +99,7 @@ try {
     throw new Error(`Collaboration to guestbook transition failed: ${JSON.stringify(collaborationToGuestbook)}`);
   }
   await evaluate("document.querySelector('[data-gallery-filter=\"collaboration\"]').click()");
-  await until("document.querySelectorAll('.gallery-collaboration-item').length", 8);
+  await until("document.querySelectorAll('.gallery-collaboration-item').length", 9);
   await evaluate("document.querySelector('.gallery-collaboration-item').click()");
   await until("document.querySelector('.gallery-work-viewer').classList.contains('is-collaboration')", true);
   const firstGoods = await evaluate("document.querySelector('.gallery-work-viewer img').getAttribute('src')");
