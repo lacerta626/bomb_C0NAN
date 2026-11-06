@@ -1,7 +1,6 @@
 @font-face {
   font-family: "DungGeunMo";
-  src: url("font-src/DungGeunMo.woff2") format("woff2"),
-       url("font-src/DungGeunMo.woff") format("woff");
+  src: url("../../assets/fonts/DungGeunMo.woff2") format("woff2");
   font-display: swap;
 }
 
