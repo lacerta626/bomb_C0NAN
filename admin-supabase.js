@@ -63,11 +63,18 @@ function renderCodes() {
       await call('admin_update_nickname', { p_code: item.code, p_nickname: nickname });
       await refresh();
     });
-    const reset = document.createElement('button');
-    reset.textContent = '횟수 초기화';
-    reset.onclick = () => run(async () => {
-      if (!confirm('이 코드의 시도 횟수를 초기화할까요?')) return;
-      await call('admin_update_code', { p_code: item.code, p_reset: true, p_disabled: null });
+    const easyReset = document.createElement('button');
+    easyReset.textContent = 'Easy 초기화';
+    easyReset.onclick = () => run(async () => {
+      if (!confirm(`${item.code} 코드의 Easy 시도 횟수만 초기화할까요?`)) return;
+      await call('admin_reset_code_attempts', { p_code: item.code, p_mode: 'easy' });
+      await refresh();
+    });
+    const hardReset = document.createElement('button');
+    hardReset.textContent = 'Hard 초기화';
+    hardReset.onclick = () => run(async () => {
+      if (!confirm(`${item.code} 코드의 Hard 시도 횟수만 초기화할까요?`)) return;
+      await call('admin_reset_code_attempts', { p_code: item.code, p_mode: 'hard' });
       await refresh();
     });
     const toggle = document.createElement('button');
@@ -76,7 +83,7 @@ function renderCodes() {
       await call('admin_update_code', { p_code: item.code, p_reset: false, p_disabled: !item.disabled });
       await refresh();
     });
-    actions.append(rename, reset, toggle); row.append(actions); $('list').append(row);
+    actions.append(rename, easyReset, hardReset, toggle); row.append(actions); $('list').append(row);
   });
 }
 

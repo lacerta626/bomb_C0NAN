@@ -568,6 +568,33 @@ class ManualManager {
     $("#manualNotes").textContent = this.getNote(this.active);
   }
 
+  createInlinePage(key) {
+    const page = document.createElement("aside");
+    page.className = "module-inline-manual";
+    page.dataset.module = key;
+    page.setAttribute("aria-label", `${MODULE_NAMES[key] || "현재 모듈"} 해설`);
+
+    const title = document.createElement("h3");
+    title.textContent = `${MODULE_NAMES[key] || "현재 모듈"} 해설`;
+    const ruleTitle = document.createElement("h4");
+    ruleTitle.textContent = "규칙";
+    const rules = document.createElement("ul");
+    this.getRules(key).forEach((rule) => {
+      const item = document.createElement("li");
+      item.textContent = rule;
+      rules.append(item);
+    });
+    const propertyTitle = document.createElement("h4");
+    propertyTitle.textContent = "폭탄 정보";
+    const properties = document.createElement("dl");
+    properties.innerHTML = this.propertyRows(this.app.state.properties);
+    const note = document.createElement("p");
+    note.className = "module-inline-note";
+    note.textContent = this.getNote(key);
+    page.append(title, ruleTitle, rules, propertyTitle, properties, note);
+    return page;
+  }
+
   propertyRows(props) {
     const rows = [
       ["일련번호", props.serial || "---"],
@@ -657,6 +684,7 @@ class ModuleManager {
     this.app.state.stage.modules.forEach((type) => {
       this.instances[type] = new constructors[type](this.app, type);
       this.instances[type].mount($("#moduleGrid"));
+      $("#moduleGrid").append(this.app.manual.createInlinePage(type));
     });
   }
 
@@ -665,6 +693,7 @@ class ModuleManager {
     if (state.solved.has(type)) return;
     state.solved.add(type);
     this.instances[type].setSolved();
+    document.querySelector(`.module-inline-manual[data-module="${type}"]`)?.classList.add("solved");
     this.app.ui.spark();
     this.app.audio.clear();
     this.app.ui.setStatus(`${MODULE_NAMES[type]} 모듈 확보 완료.`);

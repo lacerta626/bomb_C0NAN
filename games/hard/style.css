@@ -386,6 +386,10 @@ input {
   min-height: 38px;
 }
 
+.module-inline-manual {
+  display: none;
+}
+
 .circuit-board {
   min-height: 34px;
   padding: 7px;
@@ -661,6 +665,7 @@ input {
   }
 
   .game-shell {
+    display: block;
     height: auto;
     min-height: 100dvh;
     overflow: visible;
@@ -671,7 +676,81 @@ input {
   }
 
   .module-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    align-items: stretch;
+    gap: 10px 7px;
+  }
+
+  .module {
+    min-width: 0;
+    min-height: 150px;
+    padding: 7px;
+  }
+
+  .module-inline-manual {
+    display: block;
+    min-width: 0;
+    padding: 8px;
+    border: 3px solid var(--black);
+    background: #f2ecd8;
+    color: #172033;
+    box-shadow: inset -3px -3px 0 rgba(0, 0, 0, .16);
+    font-size: 10px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .module-inline-manual h3 {
+    margin: 0 0 7px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #172033;
+    color: #071426;
+    font-size: 12px;
+  }
+
+  .module-inline-manual h4 {
+    margin: 8px 0 4px;
+    color: #7b1721;
+    font-size: 10px;
+  }
+
+  .module-inline-manual ul {
+    margin: 0;
+    padding-left: 16px;
+  }
+
+  .module-inline-manual li + li {
+    margin-top: 4px;
+  }
+
+  .module-inline-manual dl {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 3px 6px;
+    margin: 0;
+  }
+
+  .module-inline-manual dt {
+    color: #596273;
+  }
+
+  .module-inline-manual dd {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .module-inline-note {
+    margin: 8px 0 0;
+    padding-top: 7px;
+    border-top: 1px dashed #596273;
+  }
+
+  .module-inline-manual.solved {
+    opacity: .58;
+  }
+
+  .manual {
+    display: none;
   }
 
   .mission-bar {
@@ -730,4 +809,24 @@ input {
   .bomb { border-width: 7px; border-image-width: 7px; }
   .indicator-title { font-size: 11px; }
   .wire.image-wire { height: 15px; }
+}
+
+/* Short desktop displays: keep every problem in one horizontal row so the
+   lower modules cannot escape below the viewport. Narrow screens can scroll
+   only the module row sideways while the HUD and manual remain fixed. */
+@media (min-width: 621px) and (max-width: 1920px) and (max-height: 1080px) {
+  .module-grid {
+    grid-template-columns: repeat(5, minmax(155px, 1fr));
+    grid-template-rows: minmax(0, 1fr);
+    align-items: stretch;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 5px;
+    scrollbar-gutter: stable;
+  }
+
+  .module {
+    min-width: 155px;
+    min-height: 0;
+  }
 }
