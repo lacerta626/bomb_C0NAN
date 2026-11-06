@@ -39,6 +39,16 @@ on conflict do nothing;
 `permission denied for function admin_status`가 나오면 함수 실행 권한이 회수된
 상태이므로 `supabase-repair-admin-access.sql` 전체를 실행한 뒤 다시 로그인합니다.
 
+## 갤러리 방명록
+
+`supabase-gallery-guestbook.sql` 전체를 SQL Editor에서 한 번 실행합니다.
+이 SQL은 게임·랭킹 데이터에 손대지 않고 `gallery_guestbook`과 전용 RPC만 추가합니다.
+공개 작성은 직접 INSERT가 아니라 30초 서버 제한이 적용된 RPC를 사용합니다.
+Supabase Dashboard의 Realtime 설정에서 `gallery_guestbook`이 활성화되어 있는지
+확인하세요. SQL이 publication 등록도 시도하며, 연결 실패 시 화면의 수동 새로고침을
+사용할 수 있습니다. CAPTCHA가 필요한 운영 환경은 Edge Function에서 CAPTCHA를
+검증한 뒤 `post_gallery_guestbook`을 호출하도록 확장하세요.
+
 ## 참가자 닉네임
 
 - 참가자는 이메일 회원가입 없이 4자리 코드와 2~12자 닉네임을 사용합니다.

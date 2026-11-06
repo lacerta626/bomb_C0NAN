@@ -12,6 +12,7 @@ const works = gallery.flatMap((artist) => artist.works || []);
 
 assert(gallery.length === 8, `Expected 8 artist groups, received ${gallery.length}.`);
 assert(works.length === 14, `Expected 14 works, received ${works.length}.`);
+assert(gallery.every((artist) => artist.category === 'participant'), 'All registered artist works must be in the participant category.');
 assert(new Set(gallery.map((artist) => artist.id)).size === gallery.length, 'Gallery IDs must be unique.');
 
 for (const artist of gallery) {
@@ -45,5 +46,11 @@ const publicGalleryData = JSON.stringify(gallery.filter((artist) => artist.artis
 assert(!/달구|청님/.test(publicGalleryData), 'Anonymous artist identity leaked into public data.');
 assert(fs.existsSync(path.join(root, 'vendor/pdfjs/pdf.min.mjs')), 'PDF.js library is missing.');
 assert(fs.existsSync(path.join(root, 'vendor/pdfjs/pdf.worker.min.mjs')), 'PDF.js worker is missing.');
+for (let index = 1; index <= 8; index += 1) {
+  assert(fs.existsSync(path.join(root, `assets/GOODS_${index}.jpg`)), `Missing collaboration image GOODS_${index}.jpg.`);
+}
+const guestbookSql = fs.readFileSync(path.join(root, 'supabase-gallery-guestbook.sql'), 'utf8');
+assert(/enable row level security/i.test(guestbookSql), 'Gallery guestbook must enable RLS.');
+assert(/post_gallery_guestbook/.test(guestbookSql) && /30 seconds/.test(guestbookSql), 'Guestbook server rate limit is missing.');
 
 console.log('Gallery integration checks passed: 8 artist groups, 14 works, 111 PDF pages.');
