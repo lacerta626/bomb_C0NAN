@@ -1,0 +1,22 @@
+
+.gallery-artist-detail,.gallery-work-viewer{position:fixed;inset:0;z-index:9999;background:rgba(3,7,16,.91);overflow-y:auto;padding:clamp(18px,5vw,72px);color:#fff}
+.gallery-modal-open{overflow:hidden}
+.gallery-detail-panel{position:relative;max-width:1120px;margin:auto;padding:clamp(24px,4vw,55px);background:#111725;border:1px solid #49dce5;box-shadow:0 20px 100px #0009}
+.gallery-detail-kicker{color:#62e7ed;letter-spacing:.19em;font-size:12px}
+.gallery-detail-panel h2{font-size:clamp(32px,5vw,64px);margin:12px 0;color:#fff}
+.gallery-detail-count{color:#aeb9c9;margin:0 0 30px}
+.gallery-detail-close,.gallery-viewer-close{position:absolute;right:20px;top:12px;color:#fff;background:transparent;border:0;font-size:42px;cursor:pointer;z-index:3}
+.gallery-detail-works{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:18px}
+.gallery-detail-work{display:flex;flex-direction:column;gap:12px;padding:0 0 14px;background:#1c2637;border:1px solid #41516a;color:#fff;cursor:pointer;text-align:left}
+.gallery-detail-work img{width:100%;height:300px;object-fit:contain;background:#0b1019}
+.gallery-detail-work span{padding:0 15px}
+.gallery-work-viewer{z-index:10000;display:flex;align-items:center;justify-content:center;gap:12px}
+.gallery-work-viewer[hidden],.gallery-artist-detail[hidden]{display:none!important}
+.gallery-work-viewer img{max-width:min(84vw,1300px);max-height:88vh;object-fit:contain}
+.gallery-viewer-prev,.gallery-viewer-next{background:#152237;border:1px solid #5c8496;color:white;font-size:38px;cursor:pointer;padding:5px 15px}
+.page-gallery .gallery-masonry{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;column-count:unset!important}
+.page-gallery .gallery-item{display:block!important;width:100%;margin:0!important;opacity:1!important;transform:none!important}
+.page-gallery .gallery-media{aspect-ratio:3/4!important;display:flex;align-items:center;justify-content:center}
+.page-gallery .gallery-media>img{width:100%;height:100%;object-fit:contain}
+.page-gallery .gallery-overlay{opacity:1;transform:none}
+@media(max-width:600px){.page-gallery .gallery-masonry{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.gallery-detail-works{grid-template-columns:1fr 1fr;gap:9px}.gallery-detail-work img{height:180px}.gallery-work-viewer{padding:10px;gap:4px}.gallery-work-viewer img{max-width:76vw}.gallery-viewer-prev,.gallery-viewer-next{padding:3px 7px;font-size:25px}}

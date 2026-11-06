@@ -39,6 +39,28 @@ create policy gallery_guestbook_public_read
 
 -- 직접 INSERT는 허용하지 않습니다. 아래 보안 정의자 RPC만 INSERT할 수 있어
 -- 길이 검증과 30초 서버 제한을 우회할 수 없습니다.
+drop policy if exists gallery_guestbook_no_direct_insert on public.gallery_guestbook;
+create policy gallery_guestbook_no_direct_insert
+  on public.gallery_guestbook
+  for insert
+  to anon, authenticated
+  with check (false);
+
+drop policy if exists gallery_guestbook_no_public_update on public.gallery_guestbook;
+create policy gallery_guestbook_no_public_update
+  on public.gallery_guestbook
+  for update
+  to anon, authenticated
+  using (false)
+  with check (false);
+
+drop policy if exists gallery_guestbook_no_public_delete on public.gallery_guestbook;
+create policy gallery_guestbook_no_public_delete
+  on public.gallery_guestbook
+  for delete
+  to anon, authenticated
+  using (false);
+
 grant select (id, nickname, message, created_at)
   on public.gallery_guestbook to anon, authenticated;
 

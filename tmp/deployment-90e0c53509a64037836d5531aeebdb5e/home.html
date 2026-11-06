@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="AFTER 11:07 — 하기와라 켄지 × 마츠다 진페이 비공식 행사">
+  <meta name="theme-color" content="#090a12">
+  <title>AFTER 11:07</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=Caveat:wght@500;600;700&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="after-home.css">
+</head>
+<body>
+  <!-- Main poster: styles in after-home.css, interactions in after-home.js -->
+  <main class="poster" id="home">
+    <div class="nav-flash" aria-hidden="true"></div>
+    <!-- Background layers -->
+    <div class="poster__grid"></div>
+    <div class="poster__noise"></div>
+    <div class="poster__scan"></div>
+    <div class="orb parallax" data-depth="-.2"></div>
+    <div class="halftone halftone--one"></div>
+    <div class="halftone halftone--two"></div>
+    <div class="checker checker--one"></div>
+    <div class="checker checker--two"></div>
+    <div class="crosshair crosshair--one"><i></i></div>
+    <div class="crosshair crosshair--two"><i></i></div>
+
+    <a class="event-logo ui-reveal" href="#home" data-route="logo" aria-label="AFTER 11:07 메인 화면으로 돌아가기">
+      <img src="assets/logo.png" alt="폭탄처리반 AFTER 11:07">
+    </a>
+
+    <!-- Large outlined background title -->
+    <div class="title parallax" data-depth="-.1" aria-hidden="true">
+      <div class="title__after" data-text="AFTER">AFTER</div>
+      <div class="title__time">11<span>:</span>07</div>
+    </div>
+    <div class="micro micro--side">OFFICIAL EVENT ARCHIVE — FILE NO. 1107</div>
+    <div class="tape">AFTER 11:07 / AFTER 11:07 / ALL CLEAR / AFTER 11:07 /</div>
+    <p class="hand hand--back">after 11:07</p>
+
+    <!-- Main character artwork -->
+    <figure class="characters parallax" data-depth=".11">
+      <img src="assets/hero-police.png" alt="하기와라 켄지와 마츠다 진페이">
+    </figure>
+
+    <!-- Character name labels -->
+    <!-- <div class="name name--hagiwara ui-reveal">
+      <small>01 / BOMB DISPOSAL UNIT</small>
+      <b>HAGIWARA</b>
+      <strong>KENJI</strong>
+      <i></i>
+    </div>
+
+    <div class="name name--matsuda ui-reveal">
+      <small>02 / BOMB DISPOSAL UNIT</small>
+      <b>MATSUDA</b>
+      <strong>JINPEI</strong>
+      <i></i>
+    </div> -->
+    <svg class="scribble" viewBox="0 0 1200 260" aria-hidden="true"><path d="M5 180C176 28 280 235 438 91S760 215 1194 32"/><path d="M94 229C350 118 604 210 1076 102"/></svg>
+    <div class="serial"><b>CASE 11—07</b><span>STATUS : ALL CLEAR</span><i></i></div>
+    <div class="starburst" aria-hidden="true"><b>11:07</b></div>
+
+    <nav class="image-nav ui-reveal" aria-label="행사 메뉴">
+      <a class="image-nav__item image-nav__item--schedule" href="event.html" data-route="schedule"><img src="assets/home-menu-schedule.png" alt="일정"></a>
+      <a class="image-nav__item image-nav__item--notice" href="notice.html" data-route="notice"><img src="assets/home-menu-notice.png" alt="공지사항"></a>
+      <a class="image-nav__item image-nav__item--game" href="minigame/index.html" data-route="game"><img src="assets/home-menu-game.png" alt="미니게임"></a>
+      <a class="image-nav__item image-nav__item--gallery" href="archive.html" data-route="gallery"><img src="assets/home-menu-gallery.png" alt="갤러리"></a>
+    </nav>
+    <!-- Footer decorations -->
+    <div class="corner corner--tl"></div>
+    <div class="corner corner--br"></div>
+    <div class="footer-code"><span>HM / ARCHIVE 001</span><b>HAGIWARA × MATSUDA</b><span>© AFTER 11:07</span></div>
+  </main>
+  <script src="vendor/gsap.min.js"></script>
+  <script src="after-home.js"></script>
+</body>
+</html>
+
