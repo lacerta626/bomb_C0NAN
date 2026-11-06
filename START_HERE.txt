@@ -1,10 +1,2 @@
-AFTER 11:07 시작 안내
-
-1. intro.html을 더블클릭해 여세요.
-2. STANDBY를 누르면 짧은 글리치 후 index.html로 바로 이동합니다.
-3. index.html에는 별도의 로딩 화면이 없습니다.
-4. 미니게임 선택 화면: minigame/index.html
-   EASY: games/easy/index.html (AFTER_1107_wire_image_original_2026-08-31)
-   HARD: games/hard/index.html (hard_single_mission(2))
-
-일부 외부 온라인 기능은 인터넷 또는 서버가 필요할 수 있습니다.
+AFTER 11:07 Supabase 간편 버전
+README_SUPABASE.md 순서대로 설정하세요.

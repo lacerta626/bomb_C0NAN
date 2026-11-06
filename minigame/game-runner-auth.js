@@ -1,0 +1,3 @@
+import {call} from '../supabase-client.js';
+const mode=location.pathname.includes('/hard/')?'hard':'easy',frame=document.querySelector('#secured-game'),key='bomb-launch-'+mode;
+(async()=>{const raw=sessionStorage.getItem(key);sessionStorage.removeItem(key);try{if(!raw)throw Error('게임 선택 화면에서 코드를 인증하고 시작해 주세요.');const data=JSON.parse(raw);if(Date.now()>data.expiresAt)throw Error('입장 유효시간이 만료되었습니다.');await call('verify_launch',{p_token:data.token,p_mode:mode});frame.addEventListener('load',()=>frame.contentWindow.postMessage({type:'AFTER1107_AUTHORIZED_START'},location.origin),{once:true});frame.src=frame.dataset.src;}catch(e){const el=document.createElement('div');el.className='fb-panel';el.textContent=e.message;frame.replaceWith(el)}})();

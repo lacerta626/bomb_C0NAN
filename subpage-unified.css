@@ -44,3 +44,6 @@
 .gallery-tab.is-active{background:#00b5ff;border-color:#00b5ff;color:#090a12}
 .gallery-empty{padding:40px 20px;text-align:center;color:#aab7d1;border:1px dashed rgba(0,181,255,.4);width:100%;column-span:all}
 @media(max-width:560px){.gallery-tabs{display:grid;grid-template-columns:1fr 1fr}.gallery-tab{padding:12px 10px}}
+
+/* Remove the shared film-grain overlay from every unified subpage. */
+.sub-noise{display:none!important}
