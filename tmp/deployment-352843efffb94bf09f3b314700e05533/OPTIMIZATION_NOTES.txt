@@ -1,9 +1,0 @@
-수정 사항
-1. index.html을 인트로로 변경 (GitHub Pages 첫 접속)
-2. 기존 메인을 home.html로 이동, STANDBY 버튼 연결
-3. 하위 페이지의 메인 링크를 home.html로 수정
-4. .git 저장소 이력 및 배포 불필요 파일 제거
-5. 중복 이미지(동일 바이트) 제거
-6. minigame/ 게임 UI와 games/ 실제 게임 리소스 보존
-
-참고: 게임 자체의 Easy/Hard 구성은 임의 삭제하지 않았습니다.

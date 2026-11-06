@@ -1,2 +1,0 @@
-AFTER 11:07 Supabase 간편 버전
-README_SUPABASE.md 순서대로 설정하세요.
