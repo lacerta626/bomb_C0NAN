@@ -23,7 +23,7 @@ async function run(task, { quiet = false } = {}) {
   try {
     if (!quiet) $('status').textContent = '처리 중...';
     await task();
-    if (!quiet) $('status').textContent = '완료';
+    if (!quiet && $('status').textContent === '처리 중...') $('status').textContent = '완료';
   } catch (error) {
     $('status').textContent = error.message;
   } finally {
@@ -114,24 +114,38 @@ async function refresh() {
 }
 
 async function verifySession() {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  if (sessionError) throw sessionError;
   if (!session) {
     isAdmin = false;
     setAccessState(null, false);
-    return;
+    return false;
   }
   const state = await call('admin_status');
   isAdmin = Boolean(state.is_admin);
   setAccessState(session, isAdmin, state.user_id || session.user.id);
   if (!isAdmin) throw Error('로그인은 성공했습니다. supabase-register-admin.sql로 이 계정을 관리자에 등록해 주세요.');
-  await refresh();
+  return true;
 }
 
 $('login').onclick = () => run(async () => {
   if (!configured) throw Error('supabase-config.js 설정이 필요합니다.');
-  const { error } = await supabase.auth.signInWithPassword({ email: $('email').value, password: $('password').value });
+  const email = $('email').value.trim();
+  const password = $('password').value;
+  if (!email || !password) throw Error('관리자 이메일과 비밀번호를 모두 입력해 주세요.');
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) throw error;
+  if (!data.session) throw Error('로그인 세션을 만들지 못했습니다. Supabase Auth 설정을 확인해 주세요.');
+
   await verifySession();
+  $('status').textContent = '관리자 로그인 완료 · 목록을 불러오는 중...';
+  try {
+    await refresh();
+    $('status').textContent = '관리자 로그인 완료 · 목록 갱신 완료';
+  } catch (error) {
+    $('status').textContent = `관리자 로그인은 완료됐지만 목록 조회에 실패했습니다: ${error.message}`;
+  }
 });
 
 $('logout').onclick = () => run(async () => {
@@ -155,7 +169,14 @@ $('refresh').onclick = () => run(refresh);
 $('code-search').addEventListener('input', renderCodes);
 ['mode-filter', 'result-filter', 'result-search'].forEach((id) => $(id).addEventListener('input', renderResults));
 
-if (configured) await run(verifySession, { quiet: true });
+if (configured) await run(async () => {
+  if (!await verifySession()) return;
+  try {
+    await refresh();
+  } catch (error) {
+    $('status').textContent = `기존 관리자 로그인은 복구됐지만 목록 조회에 실패했습니다: ${error.message}`;
+  }
+}, { quiet: true });
 
 setInterval(() => {
   if (!document.hidden && isAdmin && !busy) run(refresh, { quiet: true });
