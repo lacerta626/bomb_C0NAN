@@ -24,7 +24,9 @@
 
 ## 관리자 계정
 
-Authentication → Users에서 관리자 계정을 생성하고 UUID를 등록합니다.
+Authentication → Users에서 관리자 계정을 생성한 다음
+`supabase-register-admin.sql`의 `YOUR_ADMIN_EMAIL`을 실제 이메일로 바꾸고
+SQL Editor에서 전체 실행합니다. 이메일을 기준으로 정확한 Auth UUID가 등록됩니다.
 
 ```sql
 insert into public.admin_users(user_id)

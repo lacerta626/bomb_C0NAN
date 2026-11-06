@@ -367,7 +367,8 @@ set search_path = pg_catalog, public
 as $$
   select jsonb_build_object(
     'authenticated', auth.uid() is not null,
-    'is_admin', public.is_event_admin()
+    'is_admin', public.is_event_admin(),
+    'user_id', auth.uid()
   );
 $$;
 

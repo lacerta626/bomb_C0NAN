@@ -7,10 +7,12 @@ let newCodes = [];
 let isAdmin = false;
 let busy = false;
 
-function setAccessState(session, admin) {
+function setAccessState(session, admin, userId = '') {
   $('auth-status').textContent = session ? `로그인 상태: ${session.user.email}` : '로그인 상태: 로그아웃';
   $('auth-status').className = session ? 'status-ok' : '';
-  $('admin-status').textContent = admin ? '관리자 권한: 확인 완료' : '관리자 권한: 없음';
+  $('admin-status').textContent = admin
+    ? '관리자 권한: 확인 완료'
+    : `관리자 권한: 없음${userId ? ` (Auth UUID: ${userId})` : ''}`;
   $('admin-status').className = admin ? 'status-ok' : 'status-error';
   ['create', 'refresh', 'results-csv'].forEach((id) => { $(id).disabled = !admin; });
 }
@@ -120,8 +122,8 @@ async function verifySession() {
   }
   const state = await call('admin_status');
   isAdmin = Boolean(state.is_admin);
-  setAccessState(session, isAdmin);
-  if (!isAdmin) throw Error('로그인은 성공했지만 admin_users 관리자 권한이 없습니다.');
+  setAccessState(session, isAdmin, state.user_id || session.user.id);
+  if (!isAdmin) throw Error('로그인은 성공했습니다. supabase-register-admin.sql로 이 계정을 관리자에 등록해 주세요.');
   await refresh();
 }
 
