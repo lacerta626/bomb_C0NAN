@@ -77,8 +77,29 @@ try {
   await send('Page.navigate', { url: 'http://127.0.0.1:4173/archive.html' });
   await until('document.readyState', 'complete');
   await until("document.querySelectorAll('.gallery-collaboration-item').length", 8);
+  const guestbookControls = await evaluate(`(() => ({
+    createPassword: Boolean(document.querySelector('#gallery-guestbook-form input[name="password"][type="password"]')),
+    editorPassword: Boolean(document.querySelector('.gallery-guestbook-editor input[name="password"][type="password"]')),
+    createPattern: document.querySelector('#gallery-guestbook-form input[name="password"]')?.pattern,
+  }))()`);
+  if (!guestbookControls.createPassword || !guestbookControls.editorPassword || guestbookControls.createPattern !== '[0-9]{4,8}') {
+    throw new Error(`Guestbook password controls are invalid: ${JSON.stringify(guestbookControls)}`);
+  }
   const collaborationText = await evaluate("document.querySelector('.gallery-masonry').innerText.trim()");
   if (collaborationText) throw new Error(`Collaboration cards must not contain text: ${collaborationText}`);
+  await evaluate("document.querySelector('[data-gallery-filter=\"guestbook\"]').click()");
+  const collaborationToGuestbook = await evaluate(`(() => ({
+    galleryHidden: document.querySelector('.gallery-masonry').hidden,
+    galleryDisplay: getComputedStyle(document.querySelector('.gallery-masonry')).display,
+    collaborationState: document.querySelector('.gallery-masonry').classList.contains('is-collaboration'),
+    guestbookHidden: document.querySelector('#gallery-guestbook').hidden,
+  }))()`);
+  if (!collaborationToGuestbook.galleryHidden || collaborationToGuestbook.galleryDisplay !== 'none'
+      || collaborationToGuestbook.collaborationState || collaborationToGuestbook.guestbookHidden) {
+    throw new Error(`Collaboration to guestbook transition failed: ${JSON.stringify(collaborationToGuestbook)}`);
+  }
+  await evaluate("document.querySelector('[data-gallery-filter=\"collaboration\"]').click()");
+  await until("document.querySelectorAll('.gallery-collaboration-item').length", 8);
   await evaluate("document.querySelector('.gallery-collaboration-item').click()");
   await until("document.querySelector('.gallery-work-viewer').classList.contains('is-collaboration')", true);
   const firstGoods = await evaluate("document.querySelector('.gallery-work-viewer img').getAttribute('src')");
@@ -87,6 +108,14 @@ try {
   if (!firstGoods.endsWith('GOODS_1.jpg') || !secondGoods.endsWith('GOODS_2.jpg')) throw new Error('Collaboration navigation failed.');
   await evaluate("document.querySelector('.gallery-viewer-close').click(); document.querySelector('[data-gallery-filter=\"participant\"]').click()");
   await until("document.querySelectorAll('.gallery-item').length", 8);
+  const hiddenDisplay = await evaluate(`(() => {
+    const gallery = document.querySelector('.gallery-masonry');
+    gallery.hidden = true;
+    const display = getComputedStyle(gallery).display;
+    gallery.hidden = false;
+    return display;
+  })()`);
+  if (hiddenDisplay !== 'none') throw new Error(`Hidden gallery must use display:none, received ${hiddenDisplay}.`);
 
   const cardStyle = await evaluate(`(() => {
     const card = document.querySelector('.gallery-item');

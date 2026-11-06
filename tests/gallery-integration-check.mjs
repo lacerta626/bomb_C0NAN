@@ -53,4 +53,16 @@ const guestbookSql = fs.readFileSync(path.join(root, 'supabase-gallery-guestbook
 assert(/enable row level security/i.test(guestbookSql), 'Gallery guestbook must enable RLS.');
 assert(/post_gallery_guestbook/.test(guestbookSql) && /30 seconds/.test(guestbookSql), 'Guestbook server rate limit is missing.');
 
+const passwordMigration = fs.readFileSync(path.join(root, 'supabase-gallery-guestbook-password-v2.sql'), 'utf8');
+assert(/add column if not exists password_hash text/i.test(passwordMigration), 'Nullable password hash migration is missing.');
+assert(/extensions\.crypt\(p_password, extensions\.gen_salt\('bf', 12\)\)/i.test(passwordMigration), 'Guestbook passwords must use bcrypt.');
+assert(/drop function if exists public\.post_gallery_guestbook\(text, text, text\)/i.test(passwordMigration), 'Legacy passwordless post RPC must be removed.');
+assert(/failed_attempts >= 5/i.test(passwordMigration) && /interval '15 minutes'/i.test(passwordMigration), 'Password attempt limiting is missing.');
+assert(/revoke execute on function public\.verify_gallery_guestbook_password_internal/i.test(passwordMigration), 'Internal password verifier must not be publicly executable.');
+assert(/delete_gallery_guestbook\(uuid, text, text\)/i.test(passwordMigration), 'Password-verified delete RPC is missing.');
+
+const cleanupSql = fs.readFileSync(path.join(root, 'supabase-gallery-guestbook-clear-current.sql'), 'utf8');
+assert(/delete from public\.gallery_guestbook;/i.test(cleanupSql), 'Explicit guestbook cleanup is missing.');
+assert(!/(delete|truncate)\s+(from\s+)?public\.(game_|participant_|admin_)/i.test(cleanupSql), 'Guestbook cleanup must not touch game or admin data.');
+
 console.log('Gallery integration checks passed: 8 artist groups, 14 works, 111 PDF pages.');

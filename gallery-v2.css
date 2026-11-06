@@ -5,6 +5,12 @@
   column-gap: clamp(12px, 2vw, 24px) !important;
 }
 
+/* The display declaration above uses !important for legacy gallery styles,
+   so the native hidden attribute needs an equally specific override. */
+.page-gallery .gallery-masonry[hidden] {
+  display: none !important;
+}
+
 .page-gallery .gallery-item {
   display: inline-block !important;
   width: 100%;
@@ -89,6 +95,10 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(12px, 2vw, 24px) !important;
   columns: unset !important;
+}
+
+.page-gallery .gallery-masonry.is-collaboration[hidden] {
+  display: none !important;
 }
 
 .gallery-collaboration-item {
@@ -358,9 +368,82 @@
 .gallery-guestbook-entry strong { color: #fff; }
 .gallery-guestbook-entry time { color: #8f9bad; font-size: 10px; }
 .gallery-guestbook-entry p { margin: 0; color: #e4e8ef; line-height: 1.75; white-space: pre-wrap; overflow-wrap: anywhere; }
+.gallery-guestbook-entry-actions { display: flex; justify-content: flex-end; gap: 7px; margin-top: 14px; }
+.gallery-guestbook-entry-actions button {
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 255, 255, .24);
+  background: transparent;
+  color: #fff;
+  font-size: 11px;
+  cursor: pointer;
+}
 .gallery-guestbook-empty { padding: 30px 10px; color: #aeb9c9; text-align: center; }
 #gallery-guestbook-more { display: block; margin: 18px auto 0; }
 #gallery-guestbook-more[hidden] { display: none; }
+
+.gallery-guestbook-editor {
+  position: fixed;
+  inset: 0;
+  z-index: 11000;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, .78);
+  backdrop-filter: blur(5px);
+}
+
+.gallery-guestbook-editor[hidden] { display: none !important; }
+.gallery-editor-open { overflow: hidden; }
+.gallery-guestbook-editor form {
+  position: relative;
+  width: min(520px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  display: grid;
+  gap: 13px;
+  padding: clamp(24px, 5vw, 42px);
+  background: #111a29;
+  border-top: 1px solid #62e7ed;
+  color: #fff;
+}
+
+.gallery-guestbook-editor small { color: #62e7ed; letter-spacing: .15em; }
+.gallery-guestbook-editor h2 { margin: 0 0 8px; font-size: clamp(28px, 5vw, 42px); }
+.gallery-guestbook-editor label,
+.gallery-guestbook-edit-fields { display: grid; gap: 7px; }
+.gallery-guestbook-edit-fields[hidden] { display: none; }
+.gallery-guestbook-editor input,
+.gallery-guestbook-editor textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  background: #080d18;
+  color: #fff;
+  font: inherit;
+}
+
+.gallery-guestbook-editor-submit {
+  padding: 12px 16px;
+  border: 1px solid #62e7ed;
+  background: #62e7ed;
+  color: #080d18;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.gallery-guestbook-editor-submit:disabled { opacity: .5; cursor: wait; }
+.gallery-guestbook-editor-close {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 34px;
+  cursor: pointer;
+}
+
+.gallery-guestbook-editor [role="status"] { min-height: 1.5em; margin: 0; color: #cbd5e3; }
 
 .gallery-media-viewer {
   display: grid;

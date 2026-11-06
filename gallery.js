@@ -267,6 +267,9 @@
   }
 
   function renderGallery() {
+    // Clear the collaboration grid state before the gallery is hidden.
+    // Its display:grid!important rule can otherwise win over [hidden].
+    mount.classList.toggle('is-collaboration', activeCategory === 'collaboration');
     guestbook.hidden = activeCategory !== 'guestbook';
     mount.hidden = activeCategory === 'guestbook';
     if (activeCategory === 'guestbook') {
@@ -279,7 +282,6 @@
       return;
     }
 
-    mount.classList.toggle('is-collaboration', activeCategory === 'collaboration');
     const visible = data.filter((artist) => (artist.category || 'participant') === activeCategory);
     mount.replaceChildren();
     if (activeCategory === 'collaboration') {
