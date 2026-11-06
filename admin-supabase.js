@@ -3,6 +3,7 @@ import { supabase, call, configured } from './supabase-client.js';
 const $ = (id) => document.getElementById(id);
 let codes = [];
 let results = [];
+let guestbookEntries = [];
 let newCodes = [];
 let isAdmin = false;
 let busy = false;
@@ -106,11 +107,39 @@ function renderResults() {
   });
 }
 
+function renderGuestbook() {
+  $('guestbook-results').replaceChildren();
+  guestbookEntries.forEach((item) => {
+    const row = document.createElement('tr');
+    [item.nickname, new Date(item.created_at).toLocaleString('ko-KR'), item.message].forEach((value) => {
+      const cell = document.createElement('td');
+      cell.textContent = value;
+      row.append(cell);
+    });
+    const actions = document.createElement('td');
+    const remove = document.createElement('button');
+    remove.textContent = '삭제';
+    remove.onclick = () => run(async () => {
+      if (!confirm(`${item.nickname}님의 방명록을 삭제할까요?`)) return;
+      await call('admin_delete_gallery_guestbook', { p_id: item.id });
+      await refresh();
+    });
+    actions.append(remove);
+    row.append(actions);
+    $('guestbook-results').append(row);
+  });
+}
+
 async function refresh() {
   if (!isAdmin) return;
-  [codes, results] = await Promise.all([call('admin_list_codes'), call('admin_list_results')]);
+  [codes, results, guestbookEntries] = await Promise.all([
+    call('admin_list_codes'),
+    call('admin_list_results'),
+    call('admin_list_gallery_guestbook'),
+  ]);
   renderCodes();
   renderResults();
+  renderGuestbook();
 }
 
 async function verifySession() {
@@ -150,8 +179,8 @@ $('login').onclick = () => run(async () => {
 
 $('logout').onclick = () => run(async () => {
   await supabase.auth.signOut();
-  isAdmin = false; codes = []; results = [];
-  setAccessState(null, false); renderCodes(); renderResults();
+  isAdmin = false; codes = []; results = []; guestbookEntries = [];
+  setAccessState(null, false); renderCodes(); renderResults(); renderGuestbook();
 });
 
 $('create').onclick = () => run(async () => {

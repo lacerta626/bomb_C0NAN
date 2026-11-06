@@ -1,0 +1,51 @@
+.brand-logo-image{display:block;width:auto;height:52px;max-width:100%;object-fit:contain}
+
+.lobby-home .lobby-stage{height:100svh;min-height:100svh;padding-top:0}
+.lobby-home .lobby-stage__circuit,.lobby-home .lobby-stage__vignette{inset:0;height:100%}
+.lobby-home .artist-cylinder-scene{inset:0}
+.lobby-home .lobby-title{top:clamp(24px,5vh,62px);animation:home-title-enter .72s .14s cubic-bezier(.2,.8,.2,1) both}
+.lobby-home .lobby-stage__circuit{opacity:.68;filter:invert(1) hue-rotate(180deg) saturate(1.46) brightness(.97) contrast(1.14) drop-shadow(0 0 4px rgba(0,220,255,.18));animation:home-circuit-enter .65s ease-out both,circuit-ambient 11s .65s ease-in-out infinite}
+.lobby-circuit-signals{position:absolute;z-index:2;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;opacity:.74;mix-blend-mode:screen;-webkit-mask-image:radial-gradient(circle at 68% 50%,transparent 0 16%,rgba(0,0,0,.28) 29%,#000 55%);mask-image:radial-gradient(circle at 68% 50%,transparent 0 16%,rgba(0,0,0,.28) 29%,#000 55%)}
+.circuit-signal{opacity:0;animation:circuit-signal-presence var(--flow-duration) var(--flow-delay) linear infinite}
+.circuit-signal path{fill:none;stroke-linecap:round;stroke-dashoffset:0;animation:circuit-flow var(--flow-duration) var(--flow-delay) linear infinite}
+.circuit-signal .signal-tail{stroke:#00efff;stroke-width:1.8;stroke-dasharray:68 932;opacity:1;filter:drop-shadow(0 0 2px rgba(220,255,255,1)) drop-shadow(0 0 6px rgba(0,238,255,.95)) drop-shadow(0 0 13px rgba(0,210,255,.62))}
+.circuit-signal .signal-core{stroke:#f3ffff;stroke-width:1.35;stroke-dasharray:6 994;opacity:1;filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px rgba(0,240,255,1)) drop-shadow(0 0 14px rgba(0,218,255,.75))}
+.circuit-signal--magenta .signal-tail{stroke:#ff20e6;filter:drop-shadow(0 0 2px rgba(255,225,252,1)) drop-shadow(0 0 6px rgba(255,32,230,.92)) drop-shadow(0 0 13px rgba(255,0,212,.58))}
+.circuit-signal--magenta .signal-core{stroke:#fff2fd;filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px rgba(255,32,230,1)) drop-shadow(0 0 14px rgba(255,0,212,.72))}
+.circuit-nodes circle{fill:#dffcff;opacity:.22;transform-box:fill-box;transform-origin:center;animation:circuit-node 7.6s var(--node-delay) ease-in-out infinite;filter:drop-shadow(0 0 5px rgba(0,229,255,.7))}
+.circuit-nodes .node-magenta{fill:#ffb5f1;filter:drop-shadow(0 0 5px rgba(255,0,212,.65))}
+.lobby-home .artist-cylinder-scene{animation:home-gallery-enter .85s .28s cubic-bezier(.2,.8,.2,1) both}
+.lobby-home .lobby-character{left:68%;transform:translateX(calc(-50% + var(--pointer-x) * 7px)) translateY(calc(var(--pointer-y) * 4px)) rotate(calc(var(--pointer-x) * .3deg));animation:home-character-enter .9s .42s cubic-bezier(.2,.8,.2,1) both}
+.lobby-home .lobby-character img{transform-origin:50% 84%;animation:character-idle 6.2s 1.35s ease-in-out infinite}
+.lobby-home .lobby-menu{left:clamp(40px,6vw,120px);bottom:clamp(70px,12vh,150px);display:flex;align-items:flex-end;justify-content:flex-start;gap:clamp(10px,1vw,20px);transform:none}
+.lobby-home .lobby-menu__item{animation:home-menu-enter .55s cubic-bezier(.2,.8,.2,1) both}
+.lobby-home .lobby-menu__item:nth-child(1){animation-delay:.68s}.lobby-home .lobby-menu__item:nth-child(2){animation-delay:.75s}.lobby-home .lobby-menu__item:nth-child(3){animation-delay:.82s}.lobby-home .lobby-menu__item:nth-child(4){animation-delay:.89s}
+
+.sub-page{animation:page-enter .34s ease-out both}
+.sub-page .page-hero h1,.artist-page .artist-profile-copy h1,.artist-page .work-archive h2{color:#f4f6fc;font-family:"Noto Sans KR",sans-serif;font-weight:700;line-height:1.02;letter-spacing:-.04em;-webkit-text-stroke:0 transparent;text-stroke:0 transparent;text-shadow:none;paint-order:normal}
+.sub-page .page-hero p{animation:page-label-enter .62s .08s cubic-bezier(.2,.8,.2,1) both}
+.sub-page .page-hero h1{animation:page-title-enter .72s .16s cubic-bezier(.2,.8,.2,1) both}
+.sub-page .content-wrap{animation:page-content-enter .78s .24s cubic-bezier(.2,.8,.2,1) both}
+.motion-reveal{opacity:0;transform:translateY(50px);transition:opacity .75s cubic-bezier(.2,.8,.2,1),transform .75s cubic-bezier(.2,.8,.2,1);transition-delay:calc(min(var(--reveal-order,0),3) * 70ms)}
+.motion-reveal.is-motion-visible{opacity:1;transform:none}
+.motion-image-reveal{clip-path:inset(100% 0 0);transform:scale(1.04);transition:clip-path .82s cubic-bezier(.2,.8,.2,1),transform .82s cubic-bezier(.2,.8,.2,1)}
+.motion-image-reveal.is-motion-visible{clip-path:inset(0);transform:scale(1)}
+
+@keyframes home-circuit-enter{from{opacity:0}to{opacity:.68}}
+@keyframes circuit-ambient{0%,100%{opacity:.64}50%{opacity:.71}}
+@keyframes circuit-flow{to{stroke-dashoffset:-1000}}
+@keyframes circuit-signal-presence{0%{opacity:0}3%{opacity:1}96%{opacity:1}100%{opacity:0}}
+@keyframes circuit-node{0%,84%,100%{opacity:.2;transform:scale(1)}88%{opacity:.78;transform:scale(1.15)}92%{opacity:.3;transform:scale(1)}}
+@keyframes home-title-enter{from{opacity:0;translate:0 -24px}to{opacity:1;translate:0 0}}
+@keyframes home-gallery-enter{from{opacity:0}to{opacity:1}}
+@keyframes home-character-enter{from{opacity:0;translate:30px 20px;scale:.98}to{opacity:1;translate:0 0;scale:1}}
+@keyframes home-menu-enter{from{opacity:0;translate:-20px 10px}to{opacity:.92;translate:0 0}}
+@keyframes character-idle{0%,100%{transform:translateY(0) scale(1) rotate(-.12deg)}50%{transform:translateY(-4px) scale(1.003) rotate(.12deg)}}
+@keyframes page-enter{from{opacity:0}to{opacity:1}}
+@keyframes page-label-enter{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+@keyframes page-title-enter{from{opacity:0;transform:translateY(35px)}to{opacity:1;transform:none}}
+@keyframes page-content-enter{from{opacity:0;transform:translateY(45px)}to{opacity:1;transform:none}}
+
+@media(max-width:1100px){.lobby-home .lobby-character{left:64%}.lobby-home .lobby-menu{left:clamp(32px,5vw,64px);bottom:clamp(52px,9vh,92px);display:flex;grid-template-columns:none}.lobby-home .lobby-menu__item{width:clamp(104px,12vw,132px)}}
+@media(max-width:680px){.brand-logo-image{height:46px}.lobby-home .lobby-stage{padding-top:0}.lobby-home .lobby-stage__circuit,.lobby-home .lobby-stage__vignette{top:0;height:100%}.lobby-home .artist-cylinder-scene{inset:0}.lobby-home .lobby-title{top:24px}.lobby-home .lobby-stage__label{top:74px}.lobby-home .lobby-stage__index{top:82px}.lobby-home .lobby-character{left:62%}.lobby-home .lobby-menu{left:50%;bottom:12px;display:grid;grid-template-columns:repeat(2,112px);gap:7px 14px;transform:translateX(-50%)}.lobby-home .lobby-menu__item{width:100%}}
+@media(prefers-reduced-motion:reduce){.lobby-home .lobby-title,.lobby-home .lobby-stage__circuit,.lobby-home .artist-cylinder-scene,.lobby-home .lobby-character,.lobby-home .lobby-character img,.lobby-home .lobby-menu__item,.sub-page,.sub-page .page-hero p,.sub-page .page-hero h1,.sub-page .content-wrap{animation:none}.lobby-circuit-signals{display:none}.motion-reveal,.motion-image-reveal{opacity:1;clip-path:none;transform:none;transition:none}}

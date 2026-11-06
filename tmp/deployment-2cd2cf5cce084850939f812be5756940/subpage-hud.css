@@ -1,0 +1,40 @@
+.sub-page{background:#020617;color:#151823}
+.sub-page .page-shell,.artist-page .artist-archive{min-height:100svh;padding:clamp(100px,11vh,138px) 0 clamp(60px,8vh,100px);background:radial-gradient(circle at 14% 18%,rgba(0,234,246,.08),transparent 28%),radial-gradient(circle at 88% 72%,rgba(255,41,216,.06),transparent 30%),#020617}
+.scifi-panel{position:relative;width:min(88vw,1680px);margin:0 auto;border:1px solid #00eaf6;background-color:#f8f9fb;background-image:linear-gradient(rgba(7,16,36,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(7,16,36,.025) 1px,transparent 1px);background-size:42px 42px;clip-path:polygon(20px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 20px);box-shadow:0 20px 50px rgba(0,0,20,.25),0 0 24px rgba(0,220,255,.08);filter:drop-shadow(0 0 4px rgba(0,234,246,.42));animation:scifi-panel-enter .65s cubic-bezier(.2,.8,.2,1) both}
+.scifi-panel:before,.scifi-panel:after{content:"";position:absolute;z-index:4;pointer-events:none}
+.scifi-panel:before{left:0;top:0;width:clamp(70px,10vw,170px);height:3px;background:linear-gradient(90deg,#ff29d8 0 42%,transparent 42% 49%,#00eaf6 49%);box-shadow:0 0 5px rgba(255,41,216,.55)}
+.scifi-panel:after{right:0;bottom:0;width:clamp(90px,13vw,220px);height:2px;background:linear-gradient(90deg,#00eaf6 0 70%,transparent 70% 76%,#ff29d8 76%);box-shadow:0 0 5px rgba(0,234,246,.55)}
+.scifi-panel__label{position:absolute;z-index:6;left:clamp(34px,4vw,76px);top:0;display:flex;align-items:center;gap:14px;padding:9px 18px 10px;transform:translateY(-1px);border:1px solid #00eaf6;background:#020617;color:#f7fbff;font-size:9px;letter-spacing:.16em;box-shadow:0 0 8px rgba(0,234,246,.24)}
+.scifi-panel__label b{color:#00eaf6}.scifi-panel__label span{color:rgba(247,251,255,.68)}
+.scifi-panel__details{position:absolute;z-index:5;inset:0;pointer-events:none;color:#071024}
+.scifi-panel__details i{position:absolute;display:block;background:#00eaf6;box-shadow:0 0 5px rgba(0,234,246,.6)}
+.scifi-panel__details i:nth-child(1){left:18px;top:18px;width:5px;height:5px;border-radius:50%}.scifi-panel__details i:nth-child(2){right:28px;top:0;width:64px;height:1px}.scifi-panel__details i:nth-child(3){right:0;top:28%;width:2px;height:44px;background:#ff29d8;box-shadow:0 0 5px rgba(255,41,216,.55)}
+.scifi-panel__details span{position:absolute;right:24px;bottom:20px;color:#ff29d8;font-size:8px}.scifi-panel__details em{position:absolute;left:24px;bottom:17px;color:rgba(7,16,36,.34);font-size:8px;font-style:normal;font-weight:700;letter-spacing:.16em}
+
+.sub-page .page-hero{width:auto;min-height:clamp(300px,38vh,440px);padding:clamp(88px,10vh,128px) clamp(44px,6vw,104px) clamp(52px,7vh,84px);background:transparent;color:#071024;border-bottom:1px solid rgba(7,16,36,.16)}
+.sub-page .page-hero:after{right:clamp(12px,3vw,48px);bottom:-72px;color:rgba(7,16,36,.055)}
+.sub-page .page-hero:before{right:clamp(36px,4vw,72px);top:18%;bottom:14%;width:34%;border:1px solid rgba(7,16,36,.22);background:#eef2f7;color:#087d91;box-shadow:9px 9px 0 rgba(0,234,246,.55)}
+.sub-page .page-hero h1,.artist-page .artist-profile-copy h1,.artist-page .work-archive h2{color:#071024;text-shadow:none}
+.sub-page .page-hero p{color:#087d91}
+.sub-page .content-wrap{min-height:0;padding:clamp(54px,6vw,96px) clamp(44px,6vw,104px) clamp(76px,8vw,126px);background:transparent;color:#151823}
+.sub-page .info-table,.sub-page .notice-list{border-top-color:#00aabd}
+.sub-page .info-row,.sub-page .notice-item{border-bottom-color:rgba(7,16,36,.2)}
+.sub-page .info-row b,.sub-page .notice-title time,.sub-page .program-grid b,.sub-page .archive-cards b{color:#008ca0}
+.sub-page .info-row span,.sub-page .notice-title,.sub-page .notice-body,.sub-page .program-grid h3,.sub-page .archive-cards h3{color:#151823}
+.sub-page .notice-body,.sub-page .program-grid p,.sub-page .archive-cards p{color:#5e6475}
+.sub-page .program-grid article,.sub-page .archive-cards article,.sub-page .profile,.sub-page .notice-item,.sub-page .participant-card{background:rgba(255,255,255,.58);border-color:rgba(7,16,36,.18);box-shadow:none}
+.sub-page .program-grid article:hover,.sub-page .archive-cards article:hover,.sub-page .participant-card:hover{border-color:#00b8cc;box-shadow:inset 3px 0 0 #ff29d8}
+.sub-page .participant-intro,.sub-page .participant-help,.sub-page .participant-card p{color:#5e6475}
+.sub-page .participant-card h2{color:#071024}
+
+.artist-page .artist-archive{color:#151823}
+.artist-page .scifi-panel{padding:clamp(62px,6vw,102px) clamp(44px,6vw,104px) clamp(76px,7vw,116px)}
+.artist-page .artist-back{color:#008ca0}
+.artist-page .artist-profile-head{border-bottom-color:rgba(7,16,36,.18)}
+.artist-page .artist-kicker{color:#008ca0}.artist-page .artist-bio{color:#5e6475}.artist-page .artist-social{border-color:#00aabd;color:#071024}
+.artist-page .work-archive>header p{color:#008ca0}.artist-page .work-archive>header>span{color:rgba(7,16,36,.25)}
+.artist-page .work-card{color:#071024}.artist-page .work-card span{color:#5e6475}.artist-page .work-empty{border-color:rgba(7,16,36,.18);color:#5e6475}
+
+@keyframes scifi-panel-enter{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
+@media(max-width:760px){.sub-page .page-shell,.artist-page .artist-archive{padding-top:92px}.scifi-panel{width:calc(100vw - 28px);clip-path:polygon(14px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 14px)}.scifi-panel__label{left:22px;max-width:calc(100% - 44px);gap:8px;padding:7px 10px;font-size:7px}.sub-page .page-hero{min-height:580px;padding:78px 20px 330px}.sub-page .page-hero:before{left:20px;right:20px;top:auto;bottom:42px;width:auto;height:250px}.sub-page .content-wrap{padding:50px 20px 78px}.artist-page .scifi-panel{padding:54px 20px 74px}.scifi-panel__details em{display:none}}
+@media(prefers-reduced-motion:reduce){.scifi-panel{animation:none}}
