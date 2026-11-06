@@ -29,6 +29,14 @@ const LEVELS = [
 ];
 
 const TOTAL_TIME = 90;
+let serverRemainingSeconds = TOTAL_TIME;
+
+window.addEventListener("after1107:session", (event) => {
+  const remaining = Number(event.detail?.remainingSeconds);
+  if (Number.isFinite(remaining)) {
+    serverRemainingSeconds = Math.max(0, Math.min(TOTAL_TIME, remaining));
+  }
+});
 
 const state = {
   active: false,
@@ -66,7 +74,7 @@ const timerManager = {
   id: null,
   start() {
     this.stop();
-    state.timeLeft = TOTAL_TIME;
+    state.timeLeft = Math.ceil(serverRemainingSeconds);
     uiManager.updateTimer();
     this.id = window.setInterval(() => {
       if (!state.running) return;
@@ -469,6 +477,12 @@ const gameState = {
     els.objective.textContent = "재시작 후 처음 단계부터 다시 도전하세요.";
     animationManager.explosion();
     audioManager.explosion();
+    window.parent.postMessage({
+      type: "AFTER1107_GAME_RESULT",
+      success: false,
+      remainingSeconds: Math.max(0, state.timeLeft),
+      elapsedSeconds: TOTAL_TIME - Math.max(0, state.timeLeft),
+    }, location.origin);
   },
   succeed() {
     this.clearTransition();
@@ -485,6 +499,12 @@ const gameState = {
     animationManager.confetti();
     audioManager.success();
     rewardManager.draw(remaining);
+    window.parent.postMessage({
+      type: "AFTER1107_GAME_RESULT",
+      success: true,
+      remainingSeconds: remaining,
+      elapsedSeconds: used,
+    }, location.origin);
     window.setTimeout(() => {
       els.reward.hidden = false;
     }, 950);

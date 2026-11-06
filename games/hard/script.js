@@ -53,6 +53,14 @@ const STAGES = [
   { id: 1, difficulty: "HIGH", time: 120, timeJitter: 0, strikes: [2], moduleMode: "fixed", moduleCount: 5, pool: ["wires", "button", "keypad", "symbols", "signal"] }
 ];
 
+let serverRemainingSeconds = STAGES[0].time;
+window.addEventListener("after1107:session", (event) => {
+  const remaining = Number(event.detail?.remainingSeconds);
+  if (Number.isFinite(remaining)) {
+    serverRemainingSeconds = Math.max(0, Math.min(STAGES[0].time, remaining));
+  }
+});
+
 const PRACTICE_STAGE = { id: 0, difficulty: "PRACTICE", time: 90, timeJitter: 0, strikes: [3], moduleMode: "fixed", moduleCount: 1, pool: ["wires"] };
 
 const $ = (selector) => document.querySelector(selector);
@@ -468,7 +476,7 @@ class TimerManager {
 
   start(seconds) {
     this.stop();
-    this.app.state.remaining = seconds;
+    this.app.state.remaining = Math.ceil(Math.min(seconds, serverRemainingSeconds));
     this.app.state.startedAt = Date.now();
     this.render();
     this.interval = setInterval(() => {
@@ -1164,6 +1172,12 @@ class DefusalGame {
       const rank = this.rank();
       this.save.recordFinal(this.state.totalClearTime, rank);
       this.audio.final();
+      window.parent.postMessage({
+        type: "AFTER1107_GAME_RESULT",
+        success: true,
+        remainingSeconds: Math.max(0, this.state.remaining),
+        elapsedSeconds: this.state.totalClearTime,
+      }, location.origin);
       this.ui.setStatus(`최종 임무 완료. ${rank} 랭크를 획득했습니다.`);
     }
     this.ui.renderHud();
@@ -1183,6 +1197,12 @@ class DefusalGame {
     this.save.recordFailure();
     this.audio.boom();
     this.ui.explosion();
+    window.parent.postMessage({
+      type: "AFTER1107_GAME_RESULT",
+      success: false,
+      remainingSeconds: Math.max(0, this.state.remaining),
+      elapsedSeconds: this.state.stage ? this.state.stage.time - Math.max(0, this.state.remaining) : 0,
+    }, location.origin);
     this.ui.setStatus(`임무 실패: 장치가 폭발했습니다. ${reason}`);
     this.ui.renderHud();
   }

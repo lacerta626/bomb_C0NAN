@@ -1,10 +1,160 @@
-import {supabase,call,configured} from './supabase-client.js';
-const $=id=>document.getElementById(id);let lastCodes=[];
-async function run(fn){try{$('status').textContent='처리 중...';await fn();$('status').textContent='완료'}catch(e){$('status').textContent=e.message}}
-function enabled(on){$('create').disabled=!on;$('refresh').disabled=!on}
-$('login').onclick=()=>run(async()=>{if(!configured)throw Error('supabase-config.js 설정을 먼저 완료하세요.');const {error}=await supabase.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)throw error;await call('admin_list_codes');enabled(true);await refresh()});
-$('logout').onclick=()=>run(async()=>{await supabase.auth.signOut();enabled(false);$('list').replaceChildren()});
-$('create').onclick=()=>run(async()=>{if(!confirm('새 참가 코드 100개를 생성하시겠습니까?'))return;const codes=await call('admin_create_codes',{p_amount:100});lastCodes=codes;$('codes').textContent=codes.join(' / ');$('download').disabled=false;await refresh()});
-$('download').onclick=()=>{const csv='code\n'+lastCodes.join('\n');const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='after1107-new-codes.csv';a.click();URL.revokeObjectURL(url)};
-async function refresh(){const items=await call('admin_list_codes');$('count').textContent=`총 ${items.length}개`;$('list').replaceChildren();for(const x of items){const tr=document.createElement('tr');for(const value of [x.code,`${x.easy_used} / 2`,`${x.hard_used} / 2`,`${x.easy_used+x.hard_used} / 4`,x.disabled?'차단':'활성']){const td=document.createElement('td');td.textContent=value;tr.append(td)}const actions=document.createElement('td');const reset=document.createElement('button');reset.textContent='횟수 초기화';reset.onclick=()=>run(async()=>{if(!confirm('이 코드의 횟수를 초기화할까요?'))return;await call('admin_update_code',{p_code:x.code,p_reset:true,p_disabled:null});await refresh()});const toggle=document.createElement('button');toggle.textContent=x.disabled?'활성화':'차단';toggle.onclick=()=>run(async()=>{await call('admin_update_code',{p_code:x.code,p_reset:false,p_disabled:!x.disabled});await refresh()});actions.append(reset,toggle);tr.append(actions);$('list').append(tr)}}
-$('refresh').onclick=()=>run(refresh);
+import { supabase, call, configured } from './supabase-client.js';
+
+const $ = (id) => document.getElementById(id);
+let codes = [];
+let results = [];
+let newCodes = [];
+let isAdmin = false;
+let busy = false;
+
+function setAccessState(session, admin) {
+  $('auth-status').textContent = session ? `로그인 상태: ${session.user.email}` : '로그인 상태: 로그아웃';
+  $('auth-status').className = session ? 'status-ok' : '';
+  $('admin-status').textContent = admin ? '관리자 권한: 확인 완료' : '관리자 권한: 없음';
+  $('admin-status').className = admin ? 'status-ok' : 'status-error';
+  ['create', 'refresh', 'results-csv'].forEach((id) => { $(id).disabled = !admin; });
+}
+
+async function run(task, { quiet = false } = {}) {
+  if (busy && !quiet) return;
+  busy = true;
+  try {
+    if (!quiet) $('status').textContent = '처리 중...';
+    await task();
+    if (!quiet) $('status').textContent = '완료';
+  } catch (error) {
+    $('status').textContent = error.message;
+  } finally {
+    busy = false;
+  }
+}
+
+function downloadCsv(filename, header, rows) {
+  const escape = (value) => `"${String(value ?? '').replaceAll('"', '""')}"`;
+  const csv = [header, ...rows].map((row) => row.map(escape).join(',')).join('\n');
+  const url = URL.createObjectURL(new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function renderCodes() {
+  const query = $('code-search').value.trim().toLowerCase();
+  const filtered = codes.filter((item) => !query || item.code.includes(query) || (item.nickname || '').toLowerCase().includes(query));
+  $('count').textContent = `총 ${filtered.length}개`;
+  $('list').replaceChildren();
+
+  filtered.forEach((item) => {
+    const row = document.createElement('tr');
+    [item.code, item.nickname || '-', `${item.easy_used}/2`, `${item.hard_used}/2`, `${item.easy_used + item.hard_used}/4`, item.disabled ? '차단' : '활성'].forEach((value) => {
+      const cell = document.createElement('td'); cell.textContent = value; row.append(cell);
+    });
+    const actions = document.createElement('td');
+    const rename = document.createElement('button');
+    rename.textContent = '닉네임 수정';
+    rename.onclick = () => run(async () => {
+      const nickname = prompt('새 닉네임 (2~12자)', item.nickname || '');
+      if (nickname === null) return;
+      await call('admin_update_nickname', { p_code: item.code, p_nickname: nickname });
+      await refresh();
+    });
+    const reset = document.createElement('button');
+    reset.textContent = '횟수 초기화';
+    reset.onclick = () => run(async () => {
+      if (!confirm('이 코드의 시도 횟수를 초기화할까요?')) return;
+      await call('admin_update_code', { p_code: item.code, p_reset: true, p_disabled: null });
+      await refresh();
+    });
+    const toggle = document.createElement('button');
+    toggle.textContent = item.disabled ? '활성화' : '차단';
+    toggle.onclick = () => run(async () => {
+      await call('admin_update_code', { p_code: item.code, p_reset: false, p_disabled: !item.disabled });
+      await refresh();
+    });
+    actions.append(rename, reset, toggle); row.append(actions); $('list').append(row);
+  });
+}
+
+function renderResults() {
+  const mode = $('mode-filter').value;
+  const result = $('result-filter').value;
+  const query = $('result-search').value.trim().toLowerCase();
+  const filtered = results.filter((item) =>
+    (!mode || item.difficulty === mode)
+    && (!result || (result === 'success') === item.success)
+    && (!query || item.participant_code.includes(query) || item.nickname.toLowerCase().includes(query))
+  );
+  $('results').replaceChildren();
+
+  filtered.forEach((item) => {
+    const row = document.createElement('tr');
+    [item.participant_code, item.nickname, item.difficulty, item.attempt_number, Number(item.remaining_seconds).toFixed(2), Number(item.elapsed_seconds).toFixed(2), item.success ? '성공' : '실패', item.is_valid ? '유효' : '무효', new Date(item.started_at).toLocaleString()].forEach((value) => {
+      const cell = document.createElement('td'); cell.textContent = value; row.append(cell);
+    });
+    const actions = document.createElement('td');
+    const toggle = document.createElement('button');
+    toggle.textContent = item.is_valid ? '무효 처리' : '유효 복구';
+    toggle.onclick = () => run(async () => {
+      await call('admin_set_result_valid', { p_id: item.id, p_valid: !item.is_valid });
+      await refresh();
+    });
+    actions.append(toggle); row.append(actions); $('results').append(row);
+  });
+}
+
+async function refresh() {
+  if (!isAdmin) return;
+  [codes, results] = await Promise.all([call('admin_list_codes'), call('admin_list_results')]);
+  renderCodes();
+  renderResults();
+}
+
+async function verifySession() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    isAdmin = false;
+    setAccessState(null, false);
+    return;
+  }
+  const state = await call('admin_status');
+  isAdmin = Boolean(state.is_admin);
+  setAccessState(session, isAdmin);
+  if (!isAdmin) throw Error('로그인은 성공했지만 admin_users 관리자 권한이 없습니다.');
+  await refresh();
+}
+
+$('login').onclick = () => run(async () => {
+  if (!configured) throw Error('supabase-config.js 설정이 필요합니다.');
+  const { error } = await supabase.auth.signInWithPassword({ email: $('email').value, password: $('password').value });
+  if (error) throw error;
+  await verifySession();
+});
+
+$('logout').onclick = () => run(async () => {
+  await supabase.auth.signOut();
+  isAdmin = false; codes = []; results = [];
+  setAccessState(null, false); renderCodes(); renderResults();
+});
+
+$('create').onclick = () => run(async () => {
+  if (!confirm('새 참가 코드 100개를 생성할까요?')) return;
+  newCodes = await call('admin_create_codes', { p_amount: 100 });
+  $('codes').textContent = newCodes.join(' / ');
+  $('download').disabled = false;
+  await refresh();
+});
+
+$('download').onclick = () => downloadCsv('after1107-new-codes.csv', ['code'], newCodes.map((code) => [code]));
+$('results-csv').onclick = () => downloadCsv('after1107-results.csv', ['code','nickname','difficulty','attempt','remaining','elapsed','success','valid','started_at'], results.map((item) => [item.participant_code,item.nickname,item.difficulty,item.attempt_number,item.remaining_seconds,item.elapsed_seconds,item.success,item.is_valid,item.started_at]));
+$('refresh').onclick = () => run(refresh);
+
+$('code-search').addEventListener('input', renderCodes);
+['mode-filter', 'result-filter', 'result-search'].forEach((id) => $(id).addEventListener('input', renderResults));
+
+if (configured) await run(verifySession, { quiet: true });
+
+setInterval(() => {
+  if (!document.hidden && isAdmin && !busy) run(refresh, { quiet: true });
+}, 5000);

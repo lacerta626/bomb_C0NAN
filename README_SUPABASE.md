@@ -1,31 +1,112 @@
-# AFTER 11:07 — Supabase 무료 간편 버전
+# AFTER 11:07 — Supabase 운영 안내
 
-## 1. Supabase 설정 (약 10~20분)
-1. https://supabase.com/dashboard 에서 New project 생성 (Free).
-2. SQL Editor > New query > `supabase-setup.sql` 전체 붙여넣기 > Run.
-3. Project Settings > API (또는 Connect)에서 Project URL과 publishable/anon key 확인.
-4. 최상위 `supabase-config.js`에 URL과 키 입력. **service_role/secret key는 절대 웹에 넣지 마세요.**
-5. Authentication > Providers > Email 활성화. 관리자만 사용할 이메일 계정은 Authentication > Users에서 생성하거나 가입합니다.
-6. 관리자 계정이 생성되면 Authentication > Users에서 UUID를 복사하여 SQL Editor에서 아래 명령을 실행하세요.
+## 운영 DB 적용 순서
+
+기존 데이터베이스에는 `supabase-setup.sql` 전체를 다시 실행하지 않습니다.
+
+1. Supabase Dashboard에서 데이터베이스 백업을 생성합니다.
+2. `supabase-diagnostic-v3.sql`을 실행해 기존 함수 시그니처와 RLS 상태를 확인합니다.
+3. 결과에 예상하지 못한 함수 종속성이 없는지 확인합니다.
+4. `supabase-migration-ranking-v3.sql`을 실행합니다.
+5. 마이그레이션 마지막의 검증 쿼리에서 다음 결과를 확인합니다.
+   - `start_game(text, text, text)` → `jsonb`
+   - `verify_launch(uuid, text)` → `jsonb`
+   - `admin_list_codes()` → 닉네임 포함 테이블
+6. 다시 `supabase-diagnostic-v3.sql`을 실행해 권한과 반환형을 비교합니다.
+
+신규 Supabase 프로젝트만 `supabase-setup.sql` 실행 후 `supabase-migration-ranking-v3.sql`을 실행합니다.
+
+## 오류 원인과 해결
+
+기존 SQL은 `verify_launch(uuid,text)`를 먼저 `boolean`, 뒤에서 다시 `jsonb`로 선언했습니다. PostgreSQL은 `create or replace function`으로 반환형을 변경할 수 없어 `42P13` 오류가 발생했습니다.
+
+증분 마이그레이션은 정확한 시그니처만 `DROP FUNCTION`하고 즉시 재생성합니다. `CASCADE`, `DROP TABLE`, `TRUNCATE`는 사용하지 않습니다. 예상하지 못한 종속성이 있으면 삭제가 실패하고 트랜잭션 전체가 롤백됩니다.
+
+## 관리자 계정
+
+Authentication → Users에서 관리자 계정을 생성하고 UUID를 등록합니다.
 
 ```sql
-insert into public.admin_users(user_id) values ('5bf4b645-135c-4893-bc12-0a0fd6645516');
+insert into public.admin_users(user_id)
+values ('관리자-auth-user-uuid')
+on conflict do nothing;
 ```
 
-7. `admin-supabase.html`에 관리자 이메일/비밀번호로 로그인하여 코드 100개 생성, CSV 저장.
-8. GitHub Pages 저장소 루트에 웹사이트 파일 업로드. `supabase-setup.sql`은 업로드하지 않아도 됩니다.
+관리자 페이지는 로그인 성공과 `admin_users` 권한 확인 결과를 별도로 표시합니다. 모든 관리자 변경 작업은 서버 RPC에서 다시 권한을 검증합니다.
 
-## 동작
-- 게임 선택 페이지에서 4자리 코드를 입력하고 Easy/Hard 선택 후 확인을 누르면 DB에서 해당 난이도 1회 차감.
-- 난이도별 2회, 합계 4회. 새로고침이나 재접속으로 복구되지 않음.
-- 게임 실행용 3분짜리 일회용 입장 토큰 사용, 내부 재시작 UI 비활성화.
-- 공지사항의 방명록은 DB에 기록되며 모든 방문자가 조회 가능.
-- 관리자 화면은 인증된 관리자 UUID만 RPC를 호출할 수 있음.
+## 참가자 닉네임
 
-## 주의사항
-- 이 버전은 소규모 신뢰 기반 행사에 맞춘 간편 버전입니다. **4자리 코드는 추측 가능**하며 코드별 인증 시도 제한이 없습니다.
-- 공개 GitHub Pages의 정적 게임 파일은 개발자 도구 등으로 직접 실행할 수 있으므로 **완전한 게임 실행 차단이나 결과 위변조 방지는 불가능**합니다. DB의 게임 시작 횟수는 트랜잭션으로 제한합니다.
-- 방명록은 로그인 없이 등록할 수 있어 스팸 방지가 없습니다. 행사 기간 중 관리자 모니터링을 권장합니다.
-- 무료 Supabase 프로젝트는 활동이 없으면 일시 중지될 수 있습니다.
-- 공개 페이지의 키는 publishable/anon 키만 사용하세요. RLS를 끄거나 service_role 키를 넣으면 안 됩니다.
-- 기존 Firebase 코드는 배포 파일에서 제거했습니다.
+- 참가자는 이메일 회원가입 없이 4자리 코드와 2~12자 닉네임을 사용합니다.
+- 최초 등록은 `register_participant` RPC에서 처리하며 시도 횟수를 차감하지 않습니다.
+- 브라우저에는 무작위 참가자 토큰만 저장되고 DB에는 SHA-256 해시만 저장됩니다.
+- 닉네임 변경은 참가자 토큰을 요구하며 10분에 한 번만 가능합니다.
+- 새 기기에서는 코드와 기존 닉네임이 모두 일치해야 토큰을 재발급합니다.
+- 코드가 사실상 참가자의 비밀번호 역할을 하므로 코드 공유·유출까지 완전히 방어할 수는 없습니다.
+- 랭킹과 관리자 기록은 참가 코드로 연결하고 표시할 때 최신 닉네임을 조인합니다.
+
+## 게임 세션
+
+- Easy와 Hard는 각각 2회입니다.
+- `start_game`에서 참가자 토큰 검증과 시도 차감을 한 트랜잭션으로 처리합니다.
+- 3분 `expires_at`은 최초 게임 페이지 진입권의 만료 시간입니다.
+- 최초 검증 시 `game_deadline_at`이 Easy 90초, Hard 120초로 별도 설정됩니다.
+- 새로고침 시 같은 세션을 재사용하며 서버가 남은 시간을 다시 계산합니다.
+- 완료되거나 제한 시간이 지난 세션은 재사용할 수 없습니다.
+- 결과는 `session_id unique` 제약과 행 잠금으로 중복 저장을 막습니다.
+- 네트워크 오류 시 브라우저 저장소의 세션을 유지하고 서버에서 재검증할 수 있습니다.
+
+## 랭킹
+
+- 성공하고 `is_valid=true`인 기록만 표시합니다.
+- 참가 코드별 최고 기록 하나만 선택합니다.
+- 남은 시간이 많은 순서, 동일 점수는 먼저 등록된 순서입니다.
+- 공개 RPC는 순위, 최신 닉네임, 남은 시간만 반환합니다.
+- 참가 코드와 세션 ID는 공개 응답에 포함하지 않습니다.
+
+## 관리자 기능
+
+- 참가 코드 100개 생성 및 CSV
+- 코드·닉네임 검색
+- 관리자 닉네임 수정
+- Easy/Hard 사용 횟수 확인 및 초기화
+- 코드 차단/활성화
+- 성공/실패 기록 조회 및 필터
+- 기록 유효/무효 전환
+- 전체 결과 CSV
+- 5초 간격 자동 갱신
+
+## 수동 테스트 절차
+
+실제 Supabase 연결 후 다음을 순서대로 확인합니다.
+
+1. 미사용 코드에 닉네임 등록 후 횟수가 차감되지 않는지 확인
+2. 같은 코드로 재접속 시 닉네임과 잔여 횟수 확인
+3. 참가자 닉네임 변경 후 10분 제한 확인
+4. 관리자 닉네임 변경 후 기존 결과와 랭킹 유지 확인
+5. Easy 3회째와 Hard 3회째 시작 거부 확인
+6. 게임 중 새로고침 후 서버 기준 남은 시간 감소 확인
+7. 같은 세션을 두 탭에서 열어 추가 차감과 중복 결과가 없는지 확인
+8. 성공/실패 자동 저장과 공개 랭킹 반영 확인
+9. 일반 Auth 사용자로 관리자 RPC 거부 확인
+10. 관리자 목록 5초 자동 갱신 확인
+11. 모바일에서 코드 입력, 모달, 게임 실행 화면 확인
+
+## 배포
+
+1. 변경 파일을 GitHub Pages 배포 브랜치/디렉터리에 반영합니다.
+2. `supabase-config.js`에는 publishable/anon key만 둡니다.
+3. service role/secret key와 SQL 파일은 공개 배포에서 제외하는 것을 권장합니다.
+4. 배포 후 `Ctrl+Shift+R`로 캐시를 갱신합니다.
+5. 다음 파일 응답에 `v=20261106-3`가 반영됐는지 확인합니다.
+   - `/minigame/minigame-access.js`
+   - `/minigame/game-runner-auth.js`
+   - `/admin-supabase.js`
+   - `/leaderboard.js`
+
+## 롤백
+
+`supabase-rollback-ranking-v3.sql`은 v3 RPC 권한만 회수하며 데이터와 컬럼을 삭제하지 않습니다. 완전한 함수 복구가 필요하면 백업 ZIP의 이전 SQL에서 필요한 함수만 명시적 시그니처로 재생성합니다.
+
+## 보안 한계
+
+게임은 GitHub Pages의 클라이언트 JavaScript에서 실행됩니다. 서버가 세션 시작 시각, 마감 시각, 중복 저장, 점수 상한을 검증하지만 브라우저에서 성공 이벤트 자체를 조작하는 행위를 완전히 막을 수는 없습니다. 완전한 판정 무결성이 필요하면 게임 판정 로직을 신뢰 가능한 서버로 옮겨야 합니다.

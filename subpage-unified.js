@@ -1,5 +1,5 @@
 (()=>{const root=document.body.dataset.siteRoot||'./',page=document.body.dataset.page||'',reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;document.querySelector(`[data-nav="${page}"]`)?.classList.add('is-active');
-const flash=document.querySelector('.sub-glitch');const internal=[...document.querySelectorAll('.event-ui a,.mode-card')];internal.forEach(link=>link.addEventListener('click',event=>{if(reduced||event.defaultPrevented||link.target==='_blank'||link.getAttribute('href')?.startsWith('#'))return;event.preventDefault();const url=link.href;flash?.classList.remove('is-active');if(flash){void flash.offsetWidth;flash.classList.add('is-active')}setTimeout(()=>location.href=url,150)}));
+const flash=document.querySelector('.sub-glitch');const internal=[...document.querySelectorAll('.event-ui a')];internal.forEach(link=>link.addEventListener('click',event=>{if(reduced||event.defaultPrevented||link.target==='_blank'||link.getAttribute('href')?.startsWith('#'))return;event.preventDefault();const url=link.href;flash?.classList.remove('is-active');if(flash){void flash.offsetWidth;flash.classList.add('is-active')}setTimeout(()=>location.href=url,150)}));
 if(page==='gallery'){
 const mount=document.querySelector('.archive-cards'),data=window.AFTER_GALLERY||[];
 let activeCategory='participant';
