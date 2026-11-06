@@ -39,7 +39,7 @@ async function checkCode({ fillNickname = true } = {}) {
 
   if (fillNickname && result.nickname) nicknameInput.value = result.nickname;
   changeNicknameButton.hidden = !result.nickname;
-  remaining.textContent = `EASY ${result.easy}/2 남음 · HARD ${result.hard}/2 남음`;
+  remaining.textContent = `EASY ${result.easy}/3 남음 · HARD ${result.hard}/3 남음`;
   return result;
 }
 

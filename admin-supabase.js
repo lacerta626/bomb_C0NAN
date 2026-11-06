@@ -50,7 +50,7 @@ function renderCodes() {
 
   filtered.forEach((item) => {
     const row = document.createElement('tr');
-    [item.code, item.nickname || '-', `${item.easy_used}/2`, `${item.hard_used}/2`, `${item.easy_used + item.hard_used}/4`, item.disabled ? '차단' : '활성'].forEach((value) => {
+    [item.code, item.nickname || '-', `${item.easy_used}/3`, `${item.hard_used}/3`, `${item.easy_used + item.hard_used}/6`, item.disabled ? '차단' : '활성'].forEach((value) => {
       const cell = document.createElement('td'); cell.textContent = value; row.append(cell);
     });
     const actions = document.createElement('td');

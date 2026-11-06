@@ -9,6 +9,7 @@ const assert = (condition, message) => {
 
 const migration = read('supabase-migration-ranking-v3.sql');
 const migrationSql = migration.replace(/--.*$/gm, '');
+const attemptsMigration = read('supabase-migration-attempts-v4.sql');
 const setup = read('supabase-setup.sql');
 const access = read('minigame/minigame-access.js');
 const runner = read('minigame/game-runner-auth.js');
@@ -17,6 +18,10 @@ const easy = read('games/easy/js/script.js');
 const hard = read('games/hard/script.js');
 
 assert(!/drop\s+table|truncate|drop[^;]+cascade/i.test(migrationSql), 'Migration contains a destructive operation.');
+assert(!/drop\s+table|truncate|drop[^;]+cascade/i.test(attemptsMigration.replace(/--.*$/gm, '')), 'Attempts migration contains a destructive operation.');
+assert(/'easy', 3-r\.easy_used/.test(attemptsMigration) && /r\.easy_used >= 3/.test(attemptsMigration), 'Easy attempts must be three.');
+assert(/'hard', 3-r\.hard_used/.test(attemptsMigration) && /r\.hard_used >= 3/.test(attemptsMigration), 'Hard attempts must be three.');
+assert(/attempt_number between 1 and 3/.test(attemptsMigration), 'Third game result must be accepted.');
 assert((migration.match(/create function public\.verify_launch\(p_token uuid, p_mode text\)/g) || []).length === 1, 'verify_launch must have one final definition.');
 assert(!/verify_launch\(/.test(setup), 'Base setup must not redefine ranked-session RPCs.');
 assert(/p_access_token: participant\.token/.test(access), 'start_game must receive the participant token.');

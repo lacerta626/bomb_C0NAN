@@ -35,7 +35,7 @@ create table if not exists public.game_results (
   participant_code text not null references public.participant_codes(code),
   nickname text not null,
   difficulty text not null check (difficulty in ('easy', 'hard')),
-  attempt_number integer not null check (attempt_number between 1 and 2),
+  attempt_number integer not null check (attempt_number between 1 and 3),
   started_at timestamptz not null,
   finished_at timestamptz not null default now(),
   time_limit_seconds integer not null check (time_limit_seconds > 0),
@@ -103,8 +103,8 @@ begin
   select * into r from public.participant_codes where code = p_code and not disabled;
   if not found then raise exception '등록되지 않았거나 차단된 코드입니다.'; end if;
   return jsonb_build_object(
-    'easy', 2-r.easy_used,
-    'hard', 2-r.hard_used,
+    'easy', 3-r.easy_used,
+    'hard', 3-r.hard_used,
     'nickname', r.nickname,
     'registered', r.nickname is not null
   );
@@ -215,11 +215,11 @@ begin
   end if;
 
   if p_mode = 'easy' then
-    if r.easy_used >= 2 then raise exception 'Easy 기회를 모두 사용했습니다.'; end if;
+    if r.easy_used >= 3 then raise exception 'Easy 기회를 모두 사용했습니다.'; end if;
     attempt := r.easy_used + 1;
     update public.participant_codes set easy_used = attempt where code = p_code;
   else
-    if r.hard_used >= 2 then raise exception 'Hard 기회를 모두 사용했습니다.'; end if;
+    if r.hard_used >= 3 then raise exception 'Hard 기회를 모두 사용했습니다.'; end if;
     attempt := r.hard_used + 1;
     update public.participant_codes set hard_used = attempt where code = p_code;
   end if;

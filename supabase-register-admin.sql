@@ -5,7 +5,7 @@
 
 do $$
 declare
-  target_email text := lower(trim('YOUR_ADMIN_EMAIL'));
+  target_email text := lower(trim('lacerta626@gmail.com'));
   target_user_id uuid;
 begin
   if target_email = 'your_admin_email' or target_email = '' then

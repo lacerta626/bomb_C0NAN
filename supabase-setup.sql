@@ -7,8 +7,8 @@ create extension if not exists pgcrypto with schema extensions;
 
 create table if not exists public.participant_codes (
   code text primary key check (code ~ '^[0-9]{4}$'),
-  easy_used integer not null default 0 check (easy_used between 0 and 2),
-  hard_used integer not null default 0 check (hard_used between 0 and 2),
+  easy_used integer not null default 0 check (easy_used between 0 and 3),
+  hard_used integer not null default 0 check (hard_used between 0 and 3),
   disabled boolean not null default false,
   created_at timestamptz not null default now()
 );

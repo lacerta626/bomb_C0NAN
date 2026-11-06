@@ -36,6 +36,9 @@ on conflict do nothing;
 
 관리자 페이지는 로그인 성공과 `admin_users` 권한 확인 결과를 별도로 표시합니다. 모든 관리자 변경 작업은 서버 RPC에서 다시 권한을 검증합니다.
 
+`permission denied for function admin_status`가 나오면 함수 실행 권한이 회수된
+상태이므로 `supabase-repair-admin-access.sql` 전체를 실행한 뒤 다시 로그인합니다.
+
 ## 참가자 닉네임
 
 - 참가자는 이메일 회원가입 없이 4자리 코드와 2~12자 닉네임을 사용합니다.
@@ -48,7 +51,7 @@ on conflict do nothing;
 
 ## 게임 세션
 
-- Easy와 Hard는 각각 2회입니다.
+- Easy와 Hard는 각각 3회입니다.
 - `start_game`에서 참가자 토큰 검증과 시도 차감을 한 트랜잭션으로 처리합니다.
 - 3분 `expires_at`은 최초 게임 페이지 진입권의 만료 시간입니다.
 - 최초 검증 시 `game_deadline_at`이 Easy 90초, Hard 120초로 별도 설정됩니다.
@@ -85,7 +88,7 @@ on conflict do nothing;
 2. 같은 코드로 재접속 시 닉네임과 잔여 횟수 확인
 3. 참가자 닉네임 변경 후 10분 제한 확인
 4. 관리자 닉네임 변경 후 기존 결과와 랭킹 유지 확인
-5. Easy 3회째와 Hard 3회째 시작 거부 확인
+5. Easy 4회째와 Hard 4회째 시작 거부 확인
 6. 게임 중 새로고침 후 서버 기준 남은 시간 감소 확인
 7. 같은 세션을 두 탭에서 열어 추가 차감과 중복 결과가 없는지 확인
 8. 성공/실패 자동 저장과 공개 랭킹 반영 확인
