@@ -2,7 +2,7 @@
 (() => {
   const blocker = document.createElement('div');
   blocker.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:#080d18;color:#eaf6ff;display:grid;place-items:center;text-align:center;font:18px sans-serif;padding:30px';
-  blocker.innerHTML = '<div><h2>MISSION ACCESS REQUIRED</h2><p>게임 선택 화면에서 참가 코드를 인증해 주세요.</p><a href="../../minigame/index.html" style="color:#83dfff">코드 입력으로 돌아가기</a></div>';
+  blocker.innerHTML = '<div><h2>MISSION ACCESS REQUIRED</h2><p>게임 선택 화면에서 참가 코드를 인증해 주세요.</p><a href="../../minigame/index.html?v=20261107-4" style="color:#83dfff">코드 입력으로 돌아가기</a></div>';
   document.body.append(blocker);
 
   window.addEventListener('message', (event) => {
@@ -21,7 +21,7 @@
     element.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
-      location.href = '../../minigame/index.html';
+      location.href = '../../minigame/index.html?v=20261107-4';
     }, true);
   });
 

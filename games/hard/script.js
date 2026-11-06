@@ -1,6 +1,26 @@
 "use strict";
 
-const SYMBOL_LOGIC = window.AFTER_SYMBOL_LOGIC;
+// 하드 게임의 핵심 기호 판정은 외부 파일 로딩 실패로 게임 전체가
+// 중단되지 않도록 이 파일 안에 둡니다. GitHub Pages의 부분 배포 지연 대응용입니다.
+const SYMBOL_LOGIC = (() => {
+  const BASE_PRIORITY = ["MOON", "CIRCLE", "STAR", "BOLT", "TRIANGLE", "DIAMOND"];
+  const WRONG_MESSAGE = "기호 입력 순서가 올바르지 않습니다. 해체 매뉴얼을 다시 확인하세요.";
+
+  function orderByPriority(symbols, priority) {
+    return priority.filter((symbol) => symbols.includes(symbol));
+  }
+
+  function symbolWeight(symbol, symbols) {
+    if (symbol === "TRIANGLE" && !symbols.includes("DIAMOND")) return BASE_PRIORITY.length;
+    return BASE_PRIORITY.indexOf(symbol);
+  }
+
+  function orderConditional(symbols) {
+    return [...symbols].sort((left, right) => symbolWeight(left, symbols) - symbolWeight(right, symbols));
+  }
+
+  return Object.freeze({ WRONG_MESSAGE, orderByPriority, orderConditional });
+})();
 
 const MODULE_NAMES = {
   wires: "전선",

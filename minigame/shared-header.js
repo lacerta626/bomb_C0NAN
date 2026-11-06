@@ -9,7 +9,7 @@
       <a href="${root}index.html">홈</a>
       <a href="${root}event.html">일정</a>
       <a href="${root}notice.html">공지사항</a>
-      <a class="active" aria-current="page" href="${root}minigame/index.html">미니게임</a>
+      <a class="active" aria-current="page" href="${root}minigame/index.html?v=20261107-4">미니게임</a>
       <a href="${root}archive.html?v=20261106-4">갤러리</a>
     </nav>
     <a class="header-cta" href="${root}event.html">MISSION INFO ↗</a>`;

@@ -6,7 +6,7 @@ const navigationLinks = Object.freeze({
   logo: '#home',
   schedule: 'event.html',
   notice: 'notice.html',
-  game: 'minigame/index.html',
+  game: 'minigame/index.html?v=20261107-4',
   gallery: 'archive.html?v=20261106-4',
 });
 
