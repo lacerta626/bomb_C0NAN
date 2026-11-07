@@ -47,19 +47,7 @@
       <div class="mode-heading">
         <p>ACCESS CONTROL</p>
         <h2 id="mode-title">SELECT MODE</h2>
-        <span>참가 코드를 확인한 뒤 난이도를 선택하세요.</span>
-      </div>
-
-      <div class="fb-panel fb-game-lock">
-        <h2>ACCESS CODE / 참가 코드</h2>
-        <p>발급받은 4자리 코드와 랭킹에 표시할 닉네임을 입력하세요. Easy와 Hard는 각각 3회씩 플레이할 수 있습니다.</p>
-        <input id="participant-nickname" type="text" minlength="2" maxlength="12" autocomplete="nickname" placeholder="닉네임 (2~12자)" aria-label="참가자 닉네임">
-        <input id="participant-code" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" placeholder="0000" aria-label="4자리 참가 코드">
-        <button id="check-code" type="button">남은 기회 확인</button>
-        <button id="change-nickname" type="button" hidden>닉네임 변경</button>
-        <a class="fb-ranking-link" href="../leaderboard.html">전체 랭킹 보기</a>
-        <p class="fb-counter" id="code-remaining">코드를 입력해 주세요.</p>
-        <p class="fb-status" id="code-status" role="status"></p>
+        <span>난이도를 선택한 뒤 닉네임을 입력하세요.</span>
       </div>
 
       <div class="mode-grid">
@@ -84,8 +72,10 @@
       <small>GAME NOTICE / ACCESS CONFIRMATION</small>
       <h2 id="game-notice-title">게임 참여 안내</h2>
       <div id="game-notice-description" class="game-notice__copy">
-        <p>게임을 시작하면 해당 난이도의 기회가 1회 차감됩니다.</p>
-        <p>새로고침해도 동일한 게임 세션과 남은 시간이 유지됩니다.</p>
+        <p>닉네임은 한글, 영문, 숫자로 2~12자 입력해 주세요.</p>
+        <p>플레이 횟수 제한은 없으며 일반 공개 기록으로 저장됩니다.</p>
+        <input id="public-nickname" type="text" minlength="2" maxlength="12" autocomplete="nickname" placeholder="닉네임 (2~12자)" aria-label="플레이어 닉네임">
+        <p class="fb-status" id="game-start-status" role="status"></p>
       </div>
       <div class="game-notice__actions">
         <button type="button" class="game-notice__cancel" data-modal-cancel>취소</button>
@@ -96,7 +86,7 @@
 
   <footer class="sub-footer"><span>FILE NO. 1107-G</span><b>AFTER 11:07</b><span>SIMULATION / READY</span></footer>
   <script src="../vendor/gsap.min.js"></script>
-  <script type="module" src="minigame-access.js?v=20261106-5"></script>
+  <script type="module" src="minigame-access.js?v=public-1"></script>
   <script src="../subpage-unified.js?v=20261106-2"></script>
 </body>
 </html>

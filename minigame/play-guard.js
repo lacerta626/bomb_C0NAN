@@ -2,7 +2,7 @@
 (() => {
   const blocker = document.createElement('div');
   blocker.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:#080d18;color:#eaf6ff;display:grid;place-items:center;text-align:center;font:18px sans-serif;padding:30px';
-  blocker.innerHTML = '<div><h2>MISSION ACCESS REQUIRED</h2><p>게임 선택 화면에서 참가 코드를 인증해 주세요.</p><a href="../../minigame/index.html?v=20261107-4" style="color:#83dfff">코드 입력으로 돌아가기</a></div>';
+  blocker.innerHTML = '<div><h2>MISSION ACCESS REQUIRED</h2><p>게임 선택 화면에서 닉네임을 입력하고 시작해 주세요.</p><a href="../../minigame/index.html?v=public-1" style="color:#83dfff">게임 선택으로 돌아가기</a></div>';
   document.body.append(blocker);
 
   window.addEventListener('message', (event) => {
@@ -16,12 +16,12 @@
   document.querySelectorAll('[data-restart],[data-replay],#restartBtn').forEach((element) => {
     element.disabled = true;
     element.setAttribute('aria-disabled', 'true');
-    element.title = '재도전은 게임 선택 화면에서 새 기회를 사용해야 합니다.';
-    element.textContent = '재도전은 코드 재인증 필요';
+    element.title = '게임 선택 화면에서 새 세션을 시작해 주세요.';
+    element.textContent = '게임 선택으로 돌아가기';
     element.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
-      location.href = '../../minigame/index.html?v=20261107-4';
+      location.href = '../../minigame/index.html?v=public-1';
     }, true);
   });
 

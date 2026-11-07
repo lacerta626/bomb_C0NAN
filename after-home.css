@@ -526,6 +526,8 @@ a {
   color: var(--pink)
 }
 
+.image-nav__item--ranking{color:var(--yellow);display:grid;place-items:center}.image-nav__item--ranking span{position:relative;display:grid;place-items:center;width:92%;height:76%;border:2px solid currentColor;background:#090a12;box-shadow:6px 6px 0 var(--pink),inset 0 0 0 3px #090a12,inset 0 0 0 4px currentColor;transform:rotate(1deg);font-family:var(--condensed);text-align:center}.image-nav__item--ranking small{font:800 7px var(--sans);letter-spacing:.18em}.image-nav__item--ranking b{font-size:20px;line-height:.9}.image-nav__item--ranking em{font:900 10px var(--sans);font-style:normal;color:var(--paper)}
+
 /* =========================================================
    6. Bottom metadata and footer decorations
    ========================================================= */
@@ -778,7 +780,7 @@ a {
   }
 
   .image-nav__item {
-    width: clamp(65px,18vw,78px);
+    width: clamp(52px,17vw,78px);
     height: auto
   }
 

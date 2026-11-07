@@ -21,6 +21,7 @@
 .fb-game-lock input{width:min(250px,100%);margin:0;text-align:left;letter-spacing:normal}
 #participant-code{text-align:center;letter-spacing:.3em}
 .fb-ranking-link,.game-result-actions a{display:inline-flex;align-items:center;justify-content:center;padding:11px 16px;border:1px solid #f000f5;color:#fff;text-decoration:none;font-weight:800}
+.result-ranking{margin:18px 0;padding:0;list-style:none}.result-ranking li{display:grid;grid-template-columns:auto 1fr auto auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.14)}.result-ranking li span{border-bottom:1px dotted rgba(255,255,255,.25)}.result-ranking li em{color:#00e9f5;font-style:normal}.game-notice__copy input{width:100%;min-height:48px;margin-top:12px;padding:0 14px}
 .game-result-panel{position:absolute;z-index:20;left:50%;top:50%;width:min(620px,90vw);transform:translate(-50%,-50%);text-align:center}
 .game-result-panel h1{color:#f6d34b}
 .game-result-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}

@@ -8,6 +8,7 @@ const navigationLinks = Object.freeze({
   notice: 'notice.html',
   game: 'minigame/index.html?v=20261107-4',
   gallery: 'archive.html?v=20261106-4',
+  ranking: 'public-ranking.html',
 });
 
 document.querySelectorAll('[data-route]').forEach((link) => {
